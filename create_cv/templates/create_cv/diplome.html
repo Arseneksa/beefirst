@@ -1,0 +1,104 @@
+{% extends 'create_cv/CVbasepage.html' %}
+
+{% block content %}
+<div class="col-lg-6 col-md-6 center">
+    <h5><span style="color: #719fff;"> Diplômes</span></h5>
+    <form action="/create_cv/save/{{menu}}" method='POST'>
+        {% csrf_token %}
+        <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+        <div class="form-group">
+            <label for="diplome">Nom du diplôme <span style="color: #719fff;">*</span>: </label>
+            <select class="form-control" id="diplome" name="diplome">
+
+                <option value="default">
+                    Brevet
+                </option>
+                <option value="Probatoire">
+                    Probatoire
+                </option>
+                <option value="Baccalaureat">
+                    Baccalaureat
+                </option>
+                <option value="Licence 1">
+                    Licence 1
+                </option>
+                <option value="Licence 2">
+                    Licence 2
+                </option>
+                <option value="Licence 3">
+                    Licence 3
+                </option>
+                <option value="Master 1">
+                    Master 1
+                </option>
+                <option value="Master 2">
+                    Master 2
+                </option>
+                <option value="Doctorat">
+                    Doctorat
+                </option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="ecole">Intitulé <span style="color: #719fff;">*</span> :</label><br>
+
+            <input type="text" class="form-control" placeholder="L'intitulé de votre diplôme " id="intitule" name="intitule">
+        </div>
+        <div class="form-group">
+            <label for="ecole">Etablissement <span style="color: #719fff;">*</span> :</label><br>
+
+            <input type="text" class="form-control" placeholder="L'établissement dans lequel vous avez eu votre diplôme" id="ecole" name="ecole">
+        </div>
+        <div class="form-group">
+            <label for="annee">Année d'obtention <span style="color: #719fff;">*</span> :</label>
+            <input class="form-control" type="number" min=1970 name="annee" required value="2020" id="annee">
+        </div>
+        <div class="form-group">
+            <label for="mention">Mention <span style="color: #719fff;">*</span> :</label>
+            <select class="form-control" id="mention" name="mention">
+
+                <option value="default">
+                    choisir votre mention
+                </option>
+                <option value="Excellent">
+                    Excellent
+                </option>
+                <option value="Très bien">
+                    Très bien
+                </option>
+                <option value="Bien">
+                    Bien
+                </option>
+                <option value="Assez bien">
+                    Assez bien
+                </option>
+                <option value="Passable">
+                    Passable
+                </option>
+            </select>
+        </div>
+
+        {% include 'create_cv/boutonajouter.html' %}
+    </form>
+</div>
+<div class="col-lg-3 col-md-3 ">
+    <p class="center">Liste des diplômes</p>
+    <ul class="liste l-list">
+        {% for d in diplomas %}
+        <li>
+            <h5 class="">
+                <span class="right "><a href="{% url 'delete' menu d.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
+                <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
+            </h5>
+            <a href="#"> <span class="t-black"> {{d.m_year}} : </span> <span class="t-blue"> {{d.m_diploma}} </span> </a><br>
+            <span class="t-black"> {{d.m_intitule}} : </span>{{d.m_school}}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+{% include 'create_cv/modal_apercu.html' %}
+{% endblock %}

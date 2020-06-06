@@ -1,0 +1,68 @@
+{% extends 'create_cv/CVbasepage.html' %}
+
+{% block content %}
+<div class="col-lg-6 col-md-6 center">
+    <h5><span style="color: #719fff;"> Informations personnelles </span></h5>
+    <form action="/create_cv/enregistrer/{{menu}}" method='POST'>
+        {% csrf_token %}
+        <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+        <div class="form-group">
+            <label for="nom"> Nom <span style="color: #719fff;">*</span> :</label><br>
+            <input type="text" class="form-control" placeholder="Votre nom " id="nom" name="nom" value={{mesinfos.m_nom}} required>
+        </div>
+
+        <div class="form-group">
+            <label for="prenom"> Prénom <span style="color: #719fff;">*</span> :</label><br>
+            <input type="text" class="form-control" placeholder="Votre prénom " id="prenom" name="prenom" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ville"> Ville <span style="color: #719fff;">*</span>: </label>
+            <select class="form-control" id="ville" name="ville" required>
+
+                <option value="" disabled selected>
+                    La grande ville la plus proche de votre lieu d'habitation
+                </option>
+                <option value="Douala">
+                    Douala
+                </option>
+                <option value="Yaoundé">
+                    Yaoundé
+                </option>
+                <option value="Bafoussam">
+                    Bafoussam
+                </option>
+                <option value="Kribi">
+                    Kribi
+                </option>
+                <option value="Dschang">
+                    Dschang
+                </option>
+                <option value="Maroua">
+                    Maroua
+                </option>
+                <option value="Garoua">
+                    Garoua
+                </option>
+                <option value="Limbe">
+                    Limbe
+                </option>
+                <option value="Ebolowa">
+                    Ebolowa
+                </option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email <span style="color: #719fff;">*</span> :</label><br>
+            <input type="text" class="form-control" placeholder="Votre adresse mail" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="telephone">Téléphone <span style="color: #719fff;">*</span> :</label><br>
+            <input type="text" class="form-control" placeholder="Entrer un seul numéro de téléphone" id="telephone" name="telephone" required>
+        </div>
+        {% include 'create_cv/boutonajouter.html' %}
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<section class="resume-section interests-section mb-2">
+    <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3"> Loisirs</h2>
+    <div class="resume-section-content">
+        <ul class="list-unstyled">
+            {% for d in loisirs %}
+
+            <li>
+                
+                 {{d.m_loisir}}  
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section><!--//interests-section-->

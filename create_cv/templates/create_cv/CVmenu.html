@@ -1,0 +1,29 @@
+<div class="col-lg-3 col-md-3 d-md-block">
+    <ul class="liste">
+        <li>
+            <a href="{% url 'infoperso' %}"> <span class="{% if nbar == 'infoperso' %}t-blue{% endif %}"> Informations personnelles </span> </a>
+        </li>
+        <li>
+            <a href="{% url 'diplome' %}"> <span class="{% if nbar == 'diplome' %}t-blue{% endif %}" > Diplômes </span> </a>
+        </li>
+
+        <li>
+            <a href="{% url 'experience' %}"><span class="{% if nbar == 'experience' %}t-blue{% endif %}"> Expériences professionnelles
+                </span></a>
+        </li>
+        <li>
+            <a href="{% url 'competence' %}"><span class="{% if nbar == 'competence' %}t-blue{% endif %}"> Compétences </span></a>
+        </li>
+        
+        <li>
+            <a href="{% url 'biographie' %}"><span class="{% if nbar == 'biographie' %}t-blue{% endif %}"> Références </span></a>
+        </li>
+        <li>
+            <a href="{% url 'loisir' %}"><span class="{% if nbar == 'loisir' %}t-blue{% endif %}"> Loisirs </span></a>
+        </li>
+        <li>
+            <a href="{% url 'biographie' %}"><span class="{% if nbar == 'biographie' %}t-blue{% endif %}"> Biographie
+                </span></a>
+        </li>
+    </ul>
+</div>

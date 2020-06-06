@@ -1,0 +1,110 @@
+{% extends 'create_cv/CVbasepage.html' %}
+
+{% block content %}
+<div class="col-lg-6 col-md-6 center">
+    {% if succes == 1%}
+
+    <div class="alert alert-succes alert-dismissible fade show" role="alert">
+        <strong>Compétences enregistrées avec succès!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    {%endif%}
+    <h5><span style="color: #719fff;"> Expériences professionnelles </span></h5>
+    <form action="/create_cv/save/{{menu}}" method='POST'>
+        {% csrf_token %}
+        <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+
+        <div class="form-group">
+            <label for="entreprise" style="margin-left: 40px;">
+                Entreprise <span style="color: #719fff;"></span>
+                :
+            </label><br>
+            <input type="text" class="form-control" placeholder="Nom de l'entreprise " id="entreprise" name="entreprise">
+        </div>
+
+        <div class="form-group">
+            <label for="poste" style="margin-left: 10px;">
+               Intitulé du  poste <span style="color: #719fff;"></span>
+               :
+            </label><br>
+
+     
+            <input type="text" class="form-control" placeholder="Nom du poste occupé " id="poste" name="poste">
+        </div>
+        
+        <div class="form-group">
+            <label for="tache">Tâches effectuées <span style="color: #719fff;"></span> :</label>
+            <textarea type="textarea" class="form-control" placeholder=" exemple de tâche" id="tasks" name="tasks"></textarea>
+        </div>
+
+        <p class="center">Période de service <span style="color: #719fff;"></span> :</p>
+        <div class="row m-auto center">
+            <div class="col-lg-5 m-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend3">
+                            <i class="fas fa-calendar-alt ">
+                            </i>
+                        </span>
+                    </div>
+                    <input type="date" class="form-control" placeholder=" Arrivée  " id="start" name="start">
+                </div>
+            </div>
+            <div class="col-lg-2 m-auto center">
+                -
+            </div>
+            <div class="col-lg-5 m-auto ">
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend3">
+                            <i class="fas fa-calendar-alt ">
+                            </i>
+                        </span>
+                    </div>
+                    <input type="date" class="form-control" placeholder=" Départ  " id="end" name="end">
+                </div>
+            </div>
+
+        </div>
+
+
+        <br>
+
+        {% include 'create_cv/boutonajouter.html' %}
+    </form>
+</div>
+<div class="col-lg-3 col-md-3 ">
+    <p class="center">Liste des expériences</p>
+    <ul class="liste l-list">
+        <!--<li>
+            <h5 class="">
+                <span class="right close"> <i class="fas fa-trash icon"> </i> </span>
+                <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
+            </h5>
+            <a href="#"> <span class="t-blue"> + Déployement d'application </span> </a><br>
+
+        </li>-->
+        {% for e in experiences %}
+        <li>
+            <h5 class="">
+                <span class="right "><a href="{% url 'delete' menu e.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
+                <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
+            </h5>
+            <a href="#"> <span class="t-blue"> {{ e.m_etablissement }} </span><span class="t-black"> {{ e.m_poste }} </span> </a><br>
+            <ul>
+                {% for f in e.tasks_enumerate %}
+                <li>{{f}} </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+
+    </ul>
+
+</div>
+{% include 'create_cv/modal_apercu.html' %}
+{% endblock %}

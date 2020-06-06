@@ -1,0 +1,29 @@
+{% extends 'create_cv/CVbasepage.html' %}
+
+{% block content %}
+<div class="col-lg-6 col-md-6 center">
+    {% if succes == 1%}
+
+    <div class="alert alert-succes alert-dismissible fade show" role="alert">
+        <strong>Experiences enregistrées  avec succès!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    {%endif%}
+    <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+    <h5><span style="color: #719fff;">D- BIOGRAPHIE </span></h5>
+    <form action="/create_cv/save/{{menu}}" method='POST'>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="biographie">Décrivez-vous <span style="color: #719fff;"></span> :</label><br>
+
+            <textarea type="textarea" class="form-control" placeholde r=" " id="biographie" name="biographie"></textarea>
+        </div>
+
+        {% include 'create_cv/boutonajouter.html' %}
+    </form>
+</div>
+{% include 'create_cv/modal_apercu.html' %}
+{% endblock %}

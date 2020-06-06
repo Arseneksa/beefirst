@@ -1,0 +1,28 @@
+
+    <div class="row">
+        <div class="offset-sm-4 col-sm-2">
+            <span class="btn btn-around2 btn-block" data-toggle="modal" data-target="#apercu"> <i class="far fa-eye"></i> Aperçu CV </span><br>
+        </div>
+        {% if menu == "biographie" %}
+            <div class="col-sm-2">
+                <a href="{% url 'voir_cv'  %}" target="_blank" class="btn  btn-around2 btn-block"><i class="far fa-save"></i> Imprimer le CV </a>
+            </div>
+        {% else %}
+            <div class="col-sm-2">
+                <a href="{% url 'enregistrer' menu  %}" class="btn  btn-around2 btn-block"><i class="far fa-save"></i> Enregistrer
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="apercu">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    {% include 'apercu_cv/modele1/apercu1.html' %}
+    
+                </div>
+            </div>
+        </div>
+    </div>
