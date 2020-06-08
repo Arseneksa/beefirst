@@ -156,15 +156,19 @@ def voir_cv(request):
 def save(request,page):
 
     if page == 'infoperso':
-        #if Infoperso.objects.filter(m_user=request.user):
-
-
-
-        print(request.POST['infoperso']+'\n')
-        infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'],
-                              m_villeresidence=request.POST['ville'], m_email=request.POST['email'], 
-                              m_telephone=request.POST['telephone'])
-        infoperso.save()
+        if Infoperso.objects.filter(m_user=request.user):
+            infoperso = Infoperso.objects.get(m_user=request.user)
+            infoperso.m_nom = request.POST['nom']
+            infoperso.m_prenom = request.POST['prenom']
+            infoperso.m_villeresidence = request.POST['ville']
+            infoperso.m_email = request.POST['email']
+            infoperso.m_telephone = request.POST['telephone']
+        else:
+            print(request.POST['infoperso']+'\n')
+            infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'],
+                                m_villeresidence=request.POST['ville'], m_email=request.POST['email'], 
+                                m_telephone=request.POST['telephone'])
+            infoperso.save()
         return redirect('/create_cv/infoperso')
 
     elif page == 'diplome':
@@ -248,11 +252,11 @@ def delete(request,page,id):
 def enregistrer(request,page):
     if page == 'infoperso':
         #print(request.POST['infoperso']+'\n')
-        infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'],
+        """ infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'],
                               m_villeresidence=request.POST['ville'], m_email=request.POST['email'], 
                               m_telephone=request.POST['telephone'])
-        infoperso.save()
-        return redirect('/create_cv/infoperso')
+        infoperso.save() """
+        return redirect('/create_cv/diplome')
     
     elif page == 'diplome':
         diplomes = Diploma.objects.filter(m_user = request.user)

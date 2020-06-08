@@ -13,16 +13,21 @@
 
         <div class="form-group">
             <label for="prenom"> Prénom <span style="color: #719fff;">*</span> :</label><br>
-            <input type="text" class="form-control" placeholder="Votre prénom " id="prenom" name="prenom" required>
+            <input type="text" class="form-control" placeholder="Votre prénom " id="prenom" name="prenom" value={{mesinfos.m_prenom}} required>
         </div>
 
         <div class="form-group">
             <label for="ville"> Ville <span style="color: #719fff;">*</span>: </label>
             <select class="form-control" id="ville" name="ville" required>
-
-                <option value="" disabled selected>
-                    La grande ville la plus proche de votre lieu d'habitation
-                </option>
+                {% if mesinfos.m_villeresidence %}
+                    <option value="{{mesinfos.m_villeresidence}}" >
+                        {{mesinfos.m_villeresidence}}
+                    </option>
+                {% else %}
+                    <option value="" disabled selected>
+                        La grande ville la plus proche de votre lieu d'habitation
+                    </option>
+                {% endif %}
                 <option value="Douala">
                     Douala
                 </option>
@@ -56,11 +61,11 @@
 
         <div class="form-group">
             <label for="email">Email <span style="color: #719fff;">*</span> :</label><br>
-            <input type="text" class="form-control" placeholder="Votre adresse mail" id="email" name="email" required>
+            <input type="text" class="form-control" placeholder="Votre adresse mail" id="email" name="email" value={{mesinfos.m_email}} required>
         </div>
         <div class="form-group">
             <label for="telephone">Téléphone <span style="color: #719fff;">*</span> :</label><br>
-            <input type="text" class="form-control" placeholder="Entrer un seul numéro de téléphone" id="telephone" name="telephone" required>
+            <input type="text" class="form-control" placeholder="Entrer un seul numéro de téléphone" id="telephone" name="telephone" value={{mesinfos.m_telephone}} required>
         </div>
         {% include 'create_cv/boutonajouter.html' %}
     </form>

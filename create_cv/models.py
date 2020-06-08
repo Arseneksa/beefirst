@@ -48,6 +48,7 @@ class Loisir(models.Model):
 
 class CVFolder(models.Model):
 	m_user = models.ForeignKey(User,on_delete = models.CASCADE,blank = True,null = True)
+	m_infoperso = models.ForeignKey(Infoperso,on_delete = models.CASCADE, blank = True, null = True)
 	m_diplomas = models.ManyToManyField(Diploma,blank = True)
 	m_loisirs = models.ManyToManyField(Loisir,blank = True)
 	m_competences = models.ManyToManyField(Competence,blank = True)
