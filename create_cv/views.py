@@ -31,18 +31,9 @@ def infoperso(request):
     
     mesinfos = {}
     if Infoperso.objects.filter(m_user=request.user):
-    
         infos = Infoperso.objects.filter(m_user=request.user)
         mesinfos = infos.first()
-        """ for info in infos:
-            mesinfos["nom"] = info.m_nom
-            mesinfos["prenom"] = info.m_prenom
-            mesinfos["villeresidence"] = info.m_villeresidence
-            mesinfos["email"] = info.m_email
-            mesinfos["telephone"] = info.m_telephone """
-        
         text = "Modifier"
-
     else :
         text = "Ajouter"
 
