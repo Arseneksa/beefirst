@@ -3,16 +3,17 @@
     <div class="resume-section-content">
         <ul class="list-unstyled">
             <li class="mb-2">
-                
+
             </li>
             {% for d in diplomas %}
             <li>
-                <div class="resume-degree font-weight-bold">{{d.m_diploma}}</div>
+                <div class="resume-degree font-weight-bold">{{d.m_diploma}} {{d.m_intitule}}</div>
                 <div class="resume-degree-org">{{d.m_school}}</div>
                 <div class="resume-degree-time">{{d.m_year}}</div>
-                
+
             </li>
             {% endfor %}
+            
         </ul>
     </div>
 </section><!--//education-section-->

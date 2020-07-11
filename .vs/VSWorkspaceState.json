@@ -1,15 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\beefirst",
     "\\create_cv",
     "\\create_cv\\static",
     "\\create_cv\\static\\create_cv",
     "\\create_cv\\templates",
     "\\create_cv\\templates\\apercu_cv",
     "\\create_cv\\templates\\apercu_cv\\modele1",
-    "\\create_cv\\templates\\create_cv"
+    "\\create_cv\\templates\\create_cv",
+    "\\media",
+    "\\media\\createcv"
   ],
-  "SelectedNode": "\\create_cv\\templates\\create_cv\\CVbasepage.html",
+  "SelectedNode": "\\create_cv\\templates\\apercu_cv\\modele1\\base1.html",
   "PreviewInSolutionExplorer": false
 }

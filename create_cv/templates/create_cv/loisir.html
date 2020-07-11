@@ -25,24 +25,20 @@
     </form>
 </div>
 <div class="col-lg-3 col-md-3 ">
-    <p class="center">Loisirs</p>
+    <p class="center">Liste des loisirs</p>
     <ul class="liste l-list">
-
         {% for d in loisirs %}
-
         <li>
             <h5 class="">
                 <span class="right "><a href="{% url 'delete' menu d.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
                 <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
             </h5>
-            <a href="#"> <span class="t-blue"> {{d.m_loisir}} </span> </a><br>
+            <a href="#">  <span class="t-blue"> {{d.m_loisir}} </span> </a><br>
 
         </li>
         {% endfor %}
-
-
-
     </ul>
 </div>
+
 {% include 'create_cv/modal_apercu.html' %}
 {% endblock %}

@@ -91,8 +91,8 @@ DATABASES = {
    'default': {    
        'ENGINE': 'django.db.backends.mysql', 
        'NAME': 'beefirst',         
-       'USER': 'fritz',        
-       'PASSWORD': 'fritz',   
+       'USER': 'root',        
+       'PASSWORD': '',   
        'HOST': 'localhost',   # Or a       
        'PORT': '3306',     
    } 
@@ -140,3 +140,10 @@ STATIC_URL = '/static/'
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'create_cv/static'),
 ) """
+
+
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

@@ -3,15 +3,19 @@
 {% block content %}
 <div class="col-lg-6 col-md-6 center">
     <h5><span style="color: #719fff;"> Diplômes</span></h5>
-    <form action="/create_cv/save/{{menu}}" method='POST'>
+    <form {% if diplome %}action="/create_cv/save_edit/{{menu}}/{{diplome.id}}"{% else %}action="/create_cv/save/{{menu}}" {% endif %} method='POST'>
         {% csrf_token %}
-        <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+        <span class="help"> <a href="#aide" class="t-green" data-toggle="modal" data-target="#aide" > <i class="fas fa-info-circle icon"> </i> Aide </a></span>
         <div class="form-group">
-            <label for="diplome">Nom du diplôme <span style="color: #719fff;">*</span>: </label>
-            <select class="form-control" id="diplome" name="diplome">
+            {% if diplome %}
+            <label for="diplome1">Nom du diplôme <span style="color: #719fff;">*</span>: </label>
+            <select class="form-control" id="diplome1" name="diplome">
 
-                <option value="default">
-                    Brevet
+                <option value="{{diplome.m_diploma}}">
+                    {{diplome.m_diploma}}
+                </option>
+                <option value="BEPC">
+                    BEPC
                 </option>
                 <option value="Probatoire">
                     Probatoire
@@ -27,6 +31,89 @@
                 </option>
                 <option value="Licence 3">
                     Licence 3
+                </option>
+                <option value="BTS 1 ">
+                    BTS 1
+                </option>
+                <option value="Master 1">
+                    Master 1
+                </option>
+                <option value="Master 2">
+                    Master 2
+                </option>
+                <option value="Doctorat">
+                    Doctorat
+                </option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="intitule1">Intitulé <span style="color: #719fff;">*</span> :</label><br>
+
+            <input type="text" value="{{diplome.m_intitule}}" class="form-control" placeholder="L'intitulé de votre diplôme " id="intitule1" name="intitule">
+        </div>
+        <div class="form-group">
+            <label for="ecole1">Etablissement <span style="color: #719fff;">*</span> :</label><br>
+
+            <input type="text" value="{{diplome.m_school}}"  class="form-control" placeholder="L'établissement dans lequel vous avez eu votre diplôme" id="ecole1" name="ecole">
+        </div>
+        <div class="form-group">
+            <label for="annee1">Année d'obtention <span style="color: #719fff;">*</span> :</label>
+            <input value="{{diplome.m_year}}"  class="form-control" type="number" min=1970 name="annee" required value="2020" id="annee1">
+        </div>
+        <div class="form-group">
+            <label for="mention1">Mention <span style="color: #719fff;">*</span> :</label>
+            <select class="form-control" id="mention1" name="mention">
+
+                <option value="{{diplome.m_mention}}">
+                   {{diplome.m_mention}}
+                </option>
+                <option value="Excellent">
+                    Excellent
+                </option>
+                <option value="Très bien">
+                    Très bien
+                </option>
+                <option value="Bien">
+                    Bien
+                </option>
+                <option value="Assez bien">
+                    Assez bien
+                </option>
+                <option value="Passable">
+                    Passable
+                </option>
+            </select>
+        </div>
+        {% include 'create_cv/boutonmodifier.html' %}
+        {%else%}
+            <label for="diplome">Nom du diplôme <span style="color: #719fff;">*</span>: </label>
+            <select class="form-control" id="diplome" name="diplome">
+
+                <option value="default">
+                    Brevet
+                </option>
+                <option value="BEPC">
+                    BEPC
+                </option>
+                <option value="Probatoire">
+                    Probatoire
+                </option>
+                <option value="Baccalaureat">
+                    Baccalaureat
+                </option>
+                <option value="Licence 1">
+                    Licence 1
+                </option>
+                <option value="Licence 2">
+                    Licence 2
+                </option>
+                <option value="Licence 3">
+                    Licence 3
+                </option>
+                <option value="BTS 1 ">
+                    BTS 1
                 </option>
                 <option value="Master 1">
                     Master 1
@@ -79,8 +166,11 @@
                 </option>
             </select>
         </div>
-
         {% include 'create_cv/boutonajouter.html' %}
+
+        {%endif%}
+
+
     </form>
 </div>
 <div class="col-lg-3 col-md-3 ">
@@ -90,7 +180,7 @@
         <li>
             <h5 class="">
                 <span class="right "><a href="{% url 'delete' menu d.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
-                <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
+                <span class="right edit"> <a href="{% url 'modifier' menu d.id %}" > <i class="fas fa-edit icon edit"> </i> </a> </span>
             </h5>
             <a href="#"> <span class="t-black"> {{d.m_year}} : </span> <span class="t-blue"> {{d.m_diploma}} </span> </a><br>
             <span class="t-black"> {{d.m_intitule}} : </span>{{d.m_school}}
@@ -101,4 +191,72 @@
 
 
 {% include 'create_cv/modal_apercu.html' %}
+
+<div class="modal fade" id="aide">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <!-- Modal Header-->
+                <div class="modal-header">
+                    <h4 class="modal-title"><b class="t-green ">Conseils :</b>
+
+Listez vos études et formations et montrez à vos futurs employeurs en quoi vous êtes qualifié pour le poste.</h4>
+                    <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-1 col-lg-1 ">
+                            </div>
+                            <div class="col-md-10 col-lg-10 ">
+                                <p>Conseils</p>
+                                <ul>
+                                    <li>
+                                        N'oubliez pas de mettre en avant les études qui sont les plus pertinentes pour le poste auquel vous postulez.                                    </li>
+                                    </li>
+                                    <li>
+                                        La section éducation peut également inclure des cours supplémentaires ou formations professionnelles s'ils sont plus pertinents pour votre expérience.                                    </li>
+                                    </li>
+
+                                </ul>
+                                <p>Exemple</p>
+                                <ul>
+                                    <!--<li>
+                                    </li>-->
+
+                                </ul>
+                            </div>
+                            <div class="col-md-1 col-lg-1 ">
+
+
+                            </div>
+
+                        </div>
+
+
+                    <div class="row">
+                            <div class="col-md-4 col-lg-4 ">
+                            </div>
+                            <div class="col-md-4 col-lg-4 ">
+
+                                <button type="button" class="btn btn-around2 "   data-dismiss="modal">j'ai compris</button>
+
+                            </div>
+                            <div class="col-md-4 col-lg-4 ">
+
+
+                            </div>
+
+                        </div>
+                </div>
+
+                <!-- Modal footer
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>-->
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

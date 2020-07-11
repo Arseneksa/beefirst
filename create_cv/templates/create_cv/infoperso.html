@@ -3,12 +3,13 @@
 {% block content %}
 <div class="col-lg-6 col-md-6 center">
     <h5><span style="color: #719fff;"> Informations personnelles </span></h5>
-    <form action="/create_cv/enregistrer/{{menu}}" method='POST'>
+    <form action="/create_cv/save/{{menu}}" method='POST' enctype="multipart/form-data">
         {% csrf_token %}
-        <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+        <a href="#aide" data-toggle="modal"  class="help"> <i class="fas fa-info-circle icon" > </i> Aide </a>
         <div class="form-group">
             <label for="nom"> Nom <span style="color: #719fff;">*</span> :</label><br>
             <input type="text" class="form-control" placeholder="Votre nom " id="nom" name="nom" value={{mesinfos.m_nom}} required>
+            <input type="hidden" class="form-control" id="text" name="text" value={{text}} required>
         </div>
 
         <div class="form-group">
@@ -20,13 +21,13 @@
             <label for="ville"> Ville <span style="color: #719fff;">*</span>: </label>
             <select class="form-control" id="ville" name="ville" required>
                 {% if mesinfos.m_villeresidence %}
-                    <option value="{{mesinfos.m_villeresidence}}" >
-                        {{mesinfos.m_villeresidence}}
-                    </option>
+                <option value="{{mesinfos.m_villeresidence}}">
+                    {{mesinfos.m_villeresidence}}
+                </option>
                 {% else %}
-                    <option value="" disabled selected>
-                        La grande ville la plus proche de votre lieu d'habitation
-                    </option>
+                <option value="" disabled selected>
+                    La grande ville la plus proche de votre lieu d'habitation
+                </option>
                 {% endif %}
                 <option value="Douala">
                     Douala
@@ -68,6 +69,119 @@
             <input type="text" class="form-control" placeholder="Entrer un seul numéro de téléphone" id="telephone" name="telephone" value={{mesinfos.m_telephone}} required>
         </div>
         {% include 'create_cv/boutonajouter.html' %}
-    </form>
+    </form> 
 </div>
+<div class="col-lg-3 col-md-3 ">
+    <p class="center">Photo</p>
+    <div class="" id="fileform">
+        <form action="/create_cv/photo/" method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>Choisir le fichier:</p>
+            <div class="custom-file mb-3">
+                <input type="file" class="custom-file-input" id="customFile" name="photo" required>
+                <label class="custom-file-label" for="customFile">cliquez ici pour Choisir</label>
+            </div>
+
+
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-around3">importer</button>
+            </div>
+        </form>
+
+    </div>
+    {% if photos.m_user_avatar %}
+    <p>File uploaded at: <a href="{{ photos.m_user_avatar }}">{{ photos.m_user_avatar }}</a></p>
+    {% endif %}
+</div>
+
+
+<div class="modal fade" id="aide">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <!-- Modal Header-->
+                <div class="modal-header">
+                    <h4 class="modal-title"><b class="t-green ">Conseils :</b>
+
+dites à vos futurs employeurs quelle est la meilleure manière de vous contacter en indiquant vos coordonnées de contact actuelles.</h4>
+                    <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-1 col-lg-1 ">
+                            </div>
+                            <div class="col-md-10 col-lg-10 ">
+                                <p>Conseils</p>
+                                <ul>
+                                    <li>
+                                        Gardez à l'esprit que votre adresse e-mail et votre site Web devraient être professionnels car ils seront vus et utilisés par des employeurs potentiels.
+                                    </li>
+                                    <li>
+                                        Le format d'adresse e-mail utilisé de manière standard par la majorité des candidats est prénom.nomdefamille@email.com
+                                    </li>
+                                    <li>
+                                        Si vous postulez à un emploi en Europe, il est pratiquement obligatoire d'ajouter une photo professionnelle à votre CV.
+                                    </li>
+                                    <li>
+                                        Votre photo devrait ressembler à celle d'un passeport, ne montrant que la tête et les épaules et non le reste de votre corps, avec un bon éclairage et une apparence professionnelle.
+                                    </li>
+                                    <li>
+                                        N'oubliez pas que c'est la première impression que vous ferez à un employeur potentiel - assurez-vous qu'elle soit bonne !
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-1 col-lg-1 ">
+
+
+                            </div>
+
+                        </div>
+
+
+                    <div class="row">
+                            <div class="col-md-4 col-lg-4 ">
+                            </div>
+                            <div class="col-md-4 col-lg-4 ">
+
+                                <button type="button" class="btn btn-around2 "   data-dismiss="modal">j'ai compris</button>
+
+                            </div>
+                            <div class="col-md-4 col-lg-4 ">
+
+
+                            </div>
+
+                        </div>
+                </div>
+
+                <!-- Modal footer
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>-->
+
+            </div>
+        </div>
+    </div>
+
+
+
+<script>
+    // Afficher le nom du fichier selectionné
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+    //afficher formulaire d'importation
+
+    $(document).ready(function(){
+
+
+        $("#formshow").load(function () {
+            $("#fileform").show(1800);
+        });
+    });
+</script>
 {% endblock %}

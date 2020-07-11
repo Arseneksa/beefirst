@@ -8,13 +8,13 @@
 
                 <div class="resume-timeline-item-header mb-2">
                     <div class="d-flex flex-column flex-md-row">
-                        <h3 class="resume-position-title font-weight-bold mb-1">Nom du poste</h3>
+                        <h3 class="resume-position-title font-weight-bold mb-1">{{ e.m_poste }}</h3>
                         <div class="resume-company-name ml-auto">{{ e.m_etablissement }}</div>
                     </div><!--//row-->
                     <div class="resume-position-time">{{ e.m_start }}  -  {{ e.m_end }}</div>
                 </div><!--//resume-timeline-item-header-->
                 <div class="resume-timeline-item-desc">
-                    <p>description Poste.</p>
+                    <!--<p>description Poste.</p>-->
                     <h4 class="resume-timeline-item-desc-heading font-weight-bold">Taches effectuees:</h4>
                     <ul>
                         {% for f in e.tasks_enumerate %}

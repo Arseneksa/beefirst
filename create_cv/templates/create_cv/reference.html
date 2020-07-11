@@ -1,0 +1,44 @@
+{% extends 'create_cv/CVbasepage.html' %}
+
+{% block content %}
+<div class="col-lg-6 col-md-6 center">
+    {% if succes == 1%}
+
+   
+
+    {%endif%}
+    <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+    <h5><span style="color: #719fff;"> REFERENCE  </span></h5>
+    <form action="/create_cv/save/{{menu}}" method='POST'>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="reference">Donnez votre reference <span style="color: #719fff;"></span> :</label><br>
+
+            <textarea type="textarea" class="form-control" placeholde r=" " id="reference" name="reference"></textarea>
+        </div>
+
+        {% include 'create_cv/boutonajouter.html' %}
+    </form>
+</div>
+<div class="col-lg-3 col-md-3 ">
+    <p class="center">References</p>
+    <ul class="liste l-list">
+
+        {% for d in references %}
+
+        <li>
+            <h5 class="">
+                <span class="right "><a href="{% url 'delete' menu d.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
+                <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
+            </h5>
+            <a href="#"> <span class="t-blue"> {{d.m_description}} </span> </a><br>
+
+        </li>
+        {% endfor %}
+
+
+
+    </ul>
+</div>
+{% include 'create_cv/modal_apercu.html' %}
+{% endblock %}

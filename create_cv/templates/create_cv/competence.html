@@ -14,9 +14,19 @@
     {% endif %}
     {{succes}}
     <h5><span style="color: #719fff;"> Compétences</span></h5>
-    <form action="/create_cv/save/{{menu}}" method='POST'>
+    <form {% if competence1 %} action="/create_cv/save_edit/{{menu}}/{{competence1.id}}"{% else %} action="/create_cv/save/{{menu}}" {% endif %} method='POST'>
         {% csrf_token %}
         <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
+        {% if competence1 %}
+        <div class="form-group">
+            <label for="competence">Savoir-faire <span style="color: #719fff;"></span> :</label><br>
+            <input type="text" class="form-control" placeholder=" " id="competence"  value="{{competence1.m_competence}}" name="competence">
+
+        </div>
+
+
+        {% include 'create_cv/boutonmodifier.html' %}
+        {%else%}
         <div class="form-group">
             <label for="competence">Savoir-faire <span style="color: #719fff;"></span> :</label><br>
             <input type="text" class="form-control" placeholder=" " id="competence" name="competence">
@@ -25,6 +35,9 @@
 
 
         {% include 'create_cv/boutonajouter.html' %}
+        {% endif %}
+
+
     </form>
 </div>
 <div class="col-lg-3 col-md-3 ">
@@ -34,7 +47,7 @@
         <li>
             <h5 class="">
                 <span class="right "><a href="{% url 'delete' menu d.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
-                <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
+                <span class="right edit"> <a href="{% url 'modifier' menu d.id %}" > <i class="fas fa-edit icon edit"> </i> </a> </span>
             </h5>
             <a href="#"> <span class="t-blue"> {{d.m_competence}} </span> </a><br>
 
