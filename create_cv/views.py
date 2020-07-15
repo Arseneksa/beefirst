@@ -31,7 +31,7 @@ def home(request):
 def infoperso(request):
     
     mesinfos = {}
-    cv = CVFolder.objects.get(m_user=request.user)
+    cv = CVFolder.objects.filter(m_user=request.user)
 
     if cv:
         print(cv)
@@ -226,17 +226,17 @@ def save(request,page):
             return redirect('/create_cv/infoperso')
 
         else:
-            print(request.POST['infoperso']+'\n')
-            if request.method == 'POST' and request.FILES['photo']:
-                photo = request.FILES['photo']
-                fs = FileSystemStorage()
-                filename = fs.save(photo.name, photo)
-                uploaded_file_url = fs.url(filename)
-                m_user_avatar = uploaded_file_url
-            infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'],m_user_avatar=m_user_avatar, m_prenom=request.POST['prenom'],
+            #print(request.POST['infoperso']+'\n')
+            if request.method == 'POST' :
+                # photo = request.FILES['photo']
+                # fs = FileSystemStorage()
+                # filename = fs.save(photo.name, photo)
+                # uploaded_file_url = fs.url(filename)
+                # m_user_avatar = uploaded_file_url
+                infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'],
                                 m_villeresidence=request.POST['ville'], m_email=request.POST['email'], 
                                 m_telephone=request.POST['telephone'])
-            infoperso.save()
+                infoperso.save()
         return redirect('/create_cv/infoperso')
 
     elif page == 'diplome':
