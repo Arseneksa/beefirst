@@ -11,6 +11,7 @@ urlpatterns = [
     path('biographie/', views.biographie, name="biographie"),
     path('reference/', views.reference, name="reference"),
     path('loisir/' , views.loisir , name="loisir"),
+    path('langue/' , views.langue , name="langue"),
     path('competence/' , views.competence , name="competence"),
     path('voir_cv/' , views.voir_cv , name="voir_cv"),
     path('save/<slug:page>',views.save, name="save"),

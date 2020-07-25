@@ -1,0 +1,33 @@
+<section class="resume-section experience-section mb-5">
+    <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3"> Education </h2>
+    <div class="resume-section-content">
+        <ul class="list-unstyled">
+                <li class="mb-2">
+
+                </li>
+                {% for d in diplomas %}
+                <div class="resume-timeline position-relative">
+                <article class="resume-timeline-item position-relative pb-5">
+
+                <li>
+                    <div class="resume-timeline-item-desc"><div class="resume-timeline-item-desc"><div class="resume-degree font-weight-bold">{{d.m_diploma}} {{d.m_intitule}}</div></div>
+                    <div class="resume-degree-org">{{d.m_school}}</div>
+                    <div class="resume-degree-time">{{d.m_year}}</div>
+
+                </li>
+                </div><!--//resume-timeline-->
+
+                 {% endfor %}
+            </ul>
+
+
+
+
+
+
+
+
+
+
+    </div>
+</section><!--//experience-section-->

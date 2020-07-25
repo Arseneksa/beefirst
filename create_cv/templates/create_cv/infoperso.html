@@ -16,6 +16,14 @@
             <label for="prenom"> Prénom <span style="color: #719fff;">*</span> :</label><br>
             <input type="text" class="form-control" placeholder="Votre prénom " id="prenom" name="prenom" value={{mesinfos.m_prenom}} required>
         </div>
+        <div class="form-group">
+            <label for="age"> Age <span style="color: #719fff;">*</span> :</label><br>
+            <input type="number" class="form-control" placeholder="Votre age " id="age" name="prenom" value={{mesinfos.m_age}} required>
+        </div>
+        <div class="form-group">
+            <label for="profession"> Profession <span style="color: #719fff;">*</span> :</label><br>
+            <input type="text" class="form-control" placeholder="Votre profession " id="profession" name="profession" value={{mesinfos.m_profession}} required>
+        </div>
 
         <div class="form-group">
             <label for="ville"> Ville <span style="color: #719fff;">*</span>: </label>
@@ -91,7 +99,7 @@
 
     </div>
     {% if photos.m_user_avatar %}
-    <p>File uploaded at: <a href="{{ photos.m_user_avatar }}">{{ photos.m_user_avatar }}</a></p>
+    <p>File uploaded at: <img src="{{ photos.m_user_avatar }}" style="width: 100px; height: 100px;"></p>
     {% endif %}
 </div>
 

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <title>Resume/CV </title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+    <script defer src="{% static 'create_cv/js/jquery-3.2.1.min.js' %}"></script>
+    <script defer src="{% static 'create_cv/js/all.js' %}"></script>
+    {% include 'apercu_cv/modele1/head.html' %}
+    <style>
+
+        .button1{
+            background: #719fff;
+            text-align: center;
+            color: white;
+            border:0px  ;
+            min-height: 50px;
+        }
+        .button1:hover {
+            background:white;
+            color:#719fff;
+            min-height: 50px;
+            border:0.5px solid #719fff ;
+            border-radius: 4px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <article class="resume-wrapper text-center position-relative" style="padding:0px; margin: 0px; ">
+        <div class="resume-wrapper-inner mx-auto text-left bg-white shadow-lg" style="max-width:100%; max-height:100%; ">
+            <header class="resume-header pt-4 pt-md-0">
+                {% include 'apercu_cv/modele1/infoperso.html' %}
+            </header>
+
+
+            <div class="resume-body p-4" style="min-height: 1289px;">
+
+                {% include 'apercu_cv/modele1/resume.html' %}
+                <!--
+                    <div class="row">
+
+
+                        <div class="col-lg-6 col-md-6">
+
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+    -->
+                <div class="row">
+                    <div class="col-lg-9 col-md-8">
+
+                        {% include 'apercu_cv/modele1/diplomes2.html' %}
+                        {% include 'apercu_cv/modele1/experiences.html' %}
+
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+
+
+                        {% include 'apercu_cv/modele1/competences.html' %}
+
+
+                        <!--<section class="resume-section reference-section mb-2">
+            <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Prix</h2>
+            <div class="resume-section-content">
+                <ul class="list-unstyled resume-awards-list">
+                    <li class="mb-2 pl-4 position-relative">
+                        <i class="resume-award-icon fas fa-trophy position-absolute" data-fa-transform="shrink-2"></i>
+                        <div class="resume-award-name">Nom du prix</div>
+                        <div class="resume-award-desc">description.</div>
+                    </li>
+                    <!--
+                                    <li class="mb-0 pl-4 position-relative">
+                                        <i class="resume-award-icon fas fa-trophy position-absolute" data-fa-transform="shrink-2"></i>
+                                        <div class="resume-award-name">Award Name Ipsum</div>
+                                        <div class="resume-award-desc">Award desc goes here, ultricies nec, pellentesque.</div>
+                                    </li>
+
+                    </ul>
+                </div>
+                    </section>//interests-section-->
+                        {% include 'apercu_cv/modele1/langues.html' %}
+                        {% include 'apercu_cv/modele1/loisirs.html' %}
+
+
+                    </div>
+                </div><!--//row-->
+                <div class="row hidden-print">
+
+
+                    <div class="col-lg-4 col-md-4">
+
+                    </div>
+                    <div class="col-lg-4 col-md-4" style="margin:auto;">
+                        <button id="print" class="button1" style="margin-left:25%; margin-bottom:5%;"><i class="fas fa-print"></i> Imprimer</button>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+
+                    </div>
+
+
+
+
+                </div>
+
+            </div><!--//resume-body-->
+
+
+        </div>
+    </article>
+
+    <script>
+        $(document).ready(function(){
+            $("#print").click(function(){
+
+                $(".hidden-print").hide();
+                setTimeout(window.print(),6000)
+                setTimeout($(".hidden-print").show(),2000)
+
+            });
+         });
+
+
+    </script>
+</body>
+</html>
+

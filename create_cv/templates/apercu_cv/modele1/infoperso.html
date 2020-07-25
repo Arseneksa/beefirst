@@ -3,8 +3,10 @@
     <img class="mr-3 img-fluid picture mx-auto" src="{{photos.m_user_avatar}}" style="background: white; height:220px; width:200px;" alt="photo">
     <div class="media-body p-4 d-flex flex-column flex-md-row mx-auto mx-lg-0">
         <div class="primary-info">
-            <h1 class="name mt-0 mb-1 text-white text-uppercase text-uppercase">{{infoperso.m_prenom}}  {{infoperso.m_nom}}</h1>
-            <div class="title mb-3">Profession</div>
+            <h1 class="name mt-0 mb-1 text-white text-uppercase text-uppercase">{{infoperso.m_prenom}}  {{infoperso.m_nom}}  ({{infoperso.m_age}})</h1>
+
+            <div class="title mb-3">{{infoperso.m_profession}} </div>
+
             <ul class="list-unstyled">
                 <li class="mb-2"><a href="#"><i class="far fa-envelope fa-fw mr-2" data-fa-transform="grow-3"></i>{{infoperso.m_email}}</a></li>
                 <li><a href="#"><i class="fas fa-mobile-alt fa-fw mr-2" data-fa-transform="grow-6"></i>{{infoperso.m_telephone}}</a></li>

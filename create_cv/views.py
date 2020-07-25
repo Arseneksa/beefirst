@@ -59,6 +59,7 @@ def infoperso(request):
         'experiences': Experience.objects.filter(),
         'biographie': Biographie.objects.last(),
         'loisirs': Loisir.objects.filter(),
+        'langues': Langue.objects.filter(),
         'nbar': 'infoperso'
     }
     return render(request, 'create_cv/infoperso.html', context)
@@ -80,6 +81,7 @@ def diplome(request):
         'experiences': Experience.objects.filter(),
         'biographie': Biographie.objects.last(),
       	'loisirs': Loisir.objects.filter(),
+        'langues': Langue.objects.filter(),
         'nbar': 'diplome',
         'text': 'ajouter'
     }
@@ -98,6 +100,7 @@ def competence(request):
         'reference': Reference.objects.filter(),
         'biographie': Biographie.objects.last(),
       	'loisirs': Loisir.objects.filter(),
+        'langues': Langue.objects.filter(),
         'nbar': 'competence'
     }
     return render(request, 'create_cv/competence.html', context)
@@ -115,6 +118,7 @@ def experience(request):
         'reference': Reference.objects.filter(),
         'biographie': Biographie.objects.last(),
       	'loisirs': Loisir.objects.filter(),
+        'langues': Langue.objects.filter(),
         'nbar': 'experience'
     }
     return render(request, 'create_cv/experience.html', context)
@@ -132,6 +136,7 @@ def biographie(request):
         'reference': Reference.objects.filter(),
         'biographie': Biographie.objects.last(),
       	'loisirs': Loisir.objects.filter(),
+        'langues': Langue.objects.filter(),
         'nbar': 'biographie'
     }
     return render(request, 'create_cv/biographie.html', context)
@@ -148,6 +153,7 @@ def reference(request):
         'experiences': Experience.objects.filter(),
         'biographie': Biographie.objects.last(),
       	'loisirs': Loisir.objects.filter(),
+        'langues': Langue.objects.filter(),
         'nbar': 'reference'
     }
     return render(request, 'create_cv/reference.html', context)
@@ -164,10 +170,28 @@ def loisir(request):
         'experiences': Experience.objects.filter(),
         'reference': Reference.objects.filter(),
         'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
+        'langues': Langue.objects.filter(),
+        'loisirs': Loisir.objects.filter(),
         'nbar': 'loisir'
     }
-    return render(request, 'create_cv/loisir.html', context)
+    return render(request, 'create_cv/loisir.html', context)\
+
+@login_required(login_url='create_cv/')
+def langue(request):
+    context = {
+        'menu': 'langue',
+     	'infoperso': Infoperso.objects.filter().first(),
+        'photos': Photo.objects.filter(m_user=request.user).first(),
+     	'diplomas': Diploma.objects.filter(),
+        'competence': Competence.objects.all(),
+        'experiences': Experience.objects.filter(),
+        'reference': Reference.objects.filter(),
+        'biographie': Biographie.objects.last(),
+      	'loisirs': Loisir.objects.filter(),
+      	'langues': Langue.objects.filter(),
+        'nbar': 'langue'
+    }
+    return render(request, 'create_cv/langue.html', context)
 
 
 @login_required(login_url='create_cv/')
@@ -179,11 +203,12 @@ def voir_cv(request):
         'competence': Competence.objects.all(),
         'experiences': Experience.objects.filter(),
         'references': Reference.objects.filter(),
+        'langues': Langue.objects.filter(),
         'biographie': Biographie.objects.last(),
       	'loisirs': Loisir.objects.filter(),
 
     }
-    return render(request, 'apercu_cv/modele1/base1.html', context)
+    return render(request, 'apercu_cv/modele1/base2.html', context)
 
 @login_required(login_url='create_cv/')
 def photo(request):
@@ -220,6 +245,8 @@ def save(request,page):
             #infoperso.m_user_avatar = request.POST['photo']
             infoperso.m_villeresidence = request.POST['ville']
             infoperso.m_email = request.POST['email']
+            infoperso.m_age = request.POST['age']
+            infoperso.m_profession = request.POST['profession']
             infoperso.m_telephone = request.POST['telephone']
             infoperso.save()
             #return HttpResponse(request.POST['text'])
@@ -233,7 +260,7 @@ def save(request,page):
                 # filename = fs.save(photo.name, photo)
                 # uploaded_file_url = fs.url(filename)
                 # m_user_avatar = uploaded_file_url
-                infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'],
+                infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'], m_age=request.POST['age'], m_profession=request.POST['profession'],
                                 m_villeresidence=request.POST['ville'], m_email=request.POST['email'], 
                                 m_telephone=request.POST['telephone'])
                 infoperso.save()
@@ -281,7 +308,11 @@ def save(request,page):
     elif page == 'loisir':
         loisir = Loisir(m_user= request.user, m_loisir=request.POST['loisir'])
         loisir.save()
-        return redirect('/create_cv/loisir')	
+        return redirect('/create_cv/loisir')
+    elif page == 'langue':
+        langue = Langue(m_user= request.user, m_nom=request.POST['langue'], m_niveau=request.POST['niveau'])
+        langue.save()
+        return redirect('/create_cv/langue')
 
 def delete(request,page,id):
     if page == 'diplome':
@@ -327,6 +358,15 @@ def delete(request,page,id):
         print("Loisir supprimé avec succès")
 
         return redirect('/create_cv/loisir')
+
+    elif page == 'langue':
+
+        langue = Langue.objects.get(id = id)
+        langue.delete()
+
+        print("Langue supprimé avec succès")
+
+        return redirect('/create_cv/langue')
 def modifier(request,page,id):
     if page == 'diplome':
         text = 'ajouter';
@@ -346,6 +386,7 @@ def modifier(request,page,id):
             'reference': Reference.objects.filter(),
             'experiences': Experience.objects.filter(),
             'biographie': Biographie.objects.last(),
+            'langues': Langue.objects.filter(),
             'loisirs': Loisir.objects.filter(),
             'nbar': 'diplome',
             'text': 'Modifier'
@@ -372,6 +413,7 @@ def modifier(request,page,id):
             'experiences': Experience.objects.filter(),
             'biographie': Biographie.objects.last(),
             'loisirs': Loisir.objects.filter(),
+            'langues': Langue.objects.filter(),
             'nbar': 'competence',
             'text': 'Modifier'
         }
@@ -397,6 +439,7 @@ def modifier(request,page,id):
             'experiences': Experience.objects.filter(),
             'biographie': Biographie.objects.last(),
             'loisirs': Loisir.objects.filter(),
+            'langues': Langue.objects.filter(),
             'nbar': 'experience',
             'text': 'Modifier'
         }
@@ -419,6 +462,32 @@ def modifier(request,page,id):
         print("Loisir supprimé avec succès")
 
         return redirect('/create_cv/loisir')
+
+    elif page == 'langue':
+
+        if Langue.objects.filter(id=id):
+            langue = Langue.objects.filter(id=id)
+            langue = langue.first()
+            # text = "modifier";
+
+            # return HttpResponse(request.POST['text'])
+        context = {
+            'menu': 'langue',
+            'infoperso': Infoperso.objects.filter().first(),
+            'photos': Photo.objects.filter(m_user=request.user).first(),
+            'diplomas': Diploma.objects.filter(),
+            'langue': langue,
+            'competence': Competence.objects.all(),
+            'reference': Reference.objects.filter(),
+            'experiences': Experience.objects.filter(),
+            'biographie': Biographie.objects.last(),
+            'loisirs': Loisir.objects.filter(),
+            'langues': Langue.objects.filter(),
+            'nbar': 'langue',
+            'text': 'Modifier'
+        }
+        return render(request, 'create_cv/langue.html', context)
+        print("langue Modifier avec succès")
 
 
 def save_edit(request, page, id):
@@ -494,6 +563,16 @@ def save_edit(request, page, id):
         loisir = Loisir(m_user=request.user, m_loisir=request.POST['loisir'])
         loisir.save()
         return redirect('/create_cv/loisir')
+    elif page == 'langue':
+
+        if Langue.objects.filter(id=id):
+            langue = Langue.objects.filter(id=id)
+            langue = langue.first()
+            langue.m_nom = request.POST['langue']
+            langue.m_niveau = request.POST['niveau']
+
+            langue.save()
+        return redirect('/create_cv/langue')
 def enregistrer(request,page):
     if page == 'infoperso':
         infopersos = Infoperso.objects.filter(m_user=request.user)
@@ -572,5 +651,17 @@ def enregistrer(request,page):
 
             print (cv.m_loisirs.all())
             print("Loisir {} enregistré avec succès".format(loisir))
+        succes = 1
+        return redirect('/create_cv/langue', {'succes': succes})
+
+    elif page == 'langue':
+        #loisir = Loisir.objects.get(id = id)
+        langues = Langue.objects.filter(m_user = request.user)
+        cv = CVFolder.objects.get(m_user = request.user)
+        for langue in langues :
+            cv.m_langue.add(langue)
+
+            print (cv.m_langues.all())
+            print("Langue {} enregistré avec succès".format(langue))
         succes = 1
         return redirect('/create_cv/biographie', {'succes': succes})

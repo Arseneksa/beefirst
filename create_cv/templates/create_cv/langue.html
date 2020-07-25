@@ -1,0 +1,155 @@
+{% extends 'create_cv/CVbasepage.html' %}
+
+{% block content %}
+<div class="col-lg-6 col-md-6 center">
+    <h5><span style="color: #719fff;"> Langue</span></h5>
+    <form {% if langue %}action="/create_cv/save_edit/{{menu}}/{{langue.id}}"{% else %}action="/create_cv/save/{{menu}}" {% endif %} method='POST'>
+        {% csrf_token %}
+        <span class="help"> <a href="#aide" class="t-green" data-toggle="modal" data-target="#aide" > <i class="fas fa-info-circle icon"> </i> Aide </a></span>
+        {% if langue %}
+        <div class="form-group">
+
+            <label for="nom1"> Langue <span style="color: #719fff;">*</span>: </label>
+            <input type="text" value="{{langue.m_nom}}" class="form-control" placeholder="Nom de la langue" id="nom1" name="langue">
+
+
+        </div>
+
+        <div class="form-group">
+            <label for="niveau1">Niveau <span style="color: #719fff;">*</span> :</label>
+            <select class="form-control" id="nom1" name="niveau">
+
+                <option value="{{langue.m_niveau}}">
+                    {{langue.m_niveau}}
+                </option>
+                <option value="Faible">
+                    Faible
+                </option>
+                <option value="Moyen">
+                    Moyen
+                </option>
+                <option value="Fort">
+                    Fort
+                </option>
+
+            </select>
+        </div>
+
+        {% include 'create_cv/boutonmodifier.html' %}
+        {%else%}
+            <div class="form-group">
+
+            <label for="nom"> Langue <span style="color: #719fff;">*</span>: </label>
+            <input type="text" class="form-control" placeholder="Nom de la langue " id="nom" name="langue">
+
+
+        </div>
+
+        <div class="form-group">
+            <label for="niveau">Niveau <span style="color: #719fff;">*</span> :</label>
+            <select class="form-control" id="niveau" name="niveau">
+                <option value="Faible">
+                    Faible
+                </option>
+                <option value="Moyen">
+                    Moyen
+                </option>
+                <option value="Fort">
+                    Fort
+                </option>
+
+            </select>
+        </div>
+        {% include 'create_cv/boutonajouter.html' %}
+
+        {%endif%}
+
+
+    </form>
+</div>
+<div class="col-lg-3 col-md-3 ">
+    <p class="center">Liste des langues</p>
+    <ul class="liste l-list">
+        {% for d in langues %}
+        <li>
+            <h5 class="">
+                <span class="right "><a href="{% url 'delete' menu d.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
+                <span class="right edit"> <a href="{% url 'modifier' menu d.id %}" > <i class="fas fa-edit icon edit"> </i> </a> </span>
+            </h5>
+            <a href="#"> <span class="t-black"> {{d.m_nom}} ( </span> <span class="t-blue"> {{d.m_niveau}} </span>) </a><br>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+{% include 'create_cv/modal_apercu.html' %}
+
+<div class="modal fade" id="aide">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <!-- Modal Header-->
+                <div class="modal-header">
+                    <h4 class="modal-title"><b class="t-green ">Conseils :</b>
+
+Listez vos études et formations et montrez à vos futurs employeurs en quoi vous êtes qualifié pour le poste.</h4>
+                    <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-1 col-lg-1 ">
+                            </div>
+                            <div class="col-md-10 col-lg-10 ">
+                                <p>Conseils</p>
+                                <ul>
+                                    <li>
+                                        N'oubliez pas de mettre en avant les études qui sont les plus pertinentes pour le poste auquel vous postulez.                                    </li>
+                                    </li>
+                                    <li>
+                                        La section éducation peut également inclure des cours supplémentaires ou formations professionnelles s'ils sont plus pertinents pour votre expérience.                                    </li>
+                                    </li>
+
+                                </ul>
+                                <p>Exemple</p>
+                                <ul>
+                                    <!--<li>
+                                    </li>-->
+
+                                </ul>
+                            </div>
+                            <div class="col-md-1 col-lg-1 ">
+
+
+                            </div>
+
+                        </div>
+
+
+                    <div class="row">
+                            <div class="col-md-4 col-lg-4 ">
+                            </div>
+                            <div class="col-md-4 col-lg-4 ">
+
+                                <button type="button" class="btn btn-around2 "   data-dismiss="modal">j'ai compris</button>
+
+                            </div>
+                            <div class="col-md-4 col-lg-4 ">
+
+
+                            </div>
+
+                        </div>
+                </div>
+
+                <!-- Modal footer
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>-->
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
