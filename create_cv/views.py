@@ -2,34 +2,40 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.http import JsonResponse
 from .models import *
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required, permission_required 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
+#from sendsms import api
 
+#from smsgateway import SMSGateway, Message
+
+#client = SMSGateway('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTU5NjcyOTc3NSwiZXhwIjo0MTAyNDQ0ODAwLCJ1aWQiOjgyNzc5LCJyb2xlcyI6WyJST0xFX1VTRVIiXX0.N0nv6Ej2yOuP3jpXL_8XZcquYgzRSlwR_Gf5LPAAlo0')
 
 
 #Création utilisateur temporaire
-#user = User.objects.create_user('john', 'lennon@thebeatles.com', 'password')
+#user = User.objects.create_user('john@gmail.com', 'john@gmail.com', 'password')
 #user.save()
 
 def home(request):
 
+
+    #api.send_sms(body='test sms', from_phone='699626455', to=['655174582'])
     #authentification de l'utilisateur
     # Nous vérifions si les données sont correctes
-    user = authenticate(username='john', password='password')
+    """user = authenticate(username='john@gmail.com', password='password')
     if user:  # Si l'objet renvoyé n'est pas None
         request.session['user_id'] = request.user.id
         login(request, user)  # nous connectons l'utilisateur
         print(request.user.id)
     else:  # sinon une erreur sera affichée
-        error = True
+        error = True"""
     return render(request, 'create_cv/accueil.html', {'nbar': 'home'})
 
 
 @login_required(login_url='create_cv/')
 def infoperso(request):
-    
+
     mesinfos = {}
     cv = CVFolder.objects.filter(m_user=request.user)
 
@@ -64,7 +70,7 @@ def infoperso(request):
     }
     return render(request, 'create_cv/infoperso.html', context)
 
-    
+
 
 @login_required(login_url='create_cv/')
 def diplome(request):
@@ -92,7 +98,7 @@ def diplome(request):
 def competence(request):
     context = {
         'menu': 'competence',
-     	'infoperso': Infoperso.objects.filter().first(),    
+     	'infoperso': Infoperso.objects.filter().first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
      	'diplomas': Diploma.objects.filter(),
         'competence': Competence.objects.all(),
@@ -232,7 +238,7 @@ def photo(request):
 
             photos = Photo(m_user=request.user,m_user_avatar=m_user_avatar)
             photos.save()
-    
+
     return redirect('/create_cv/infoperso')
 def save(request,page):
 
@@ -261,7 +267,7 @@ def save(request,page):
                 # uploaded_file_url = fs.url(filename)
                 # m_user_avatar = uploaded_file_url
                 infoperso = Infoperso(m_user=request.user, m_nom=request.POST['nom'], m_prenom=request.POST['prenom'], m_age=request.POST['age'], m_profession=request.POST['profession'],
-                                m_villeresidence=request.POST['ville'], m_email=request.POST['email'], 
+                                m_villeresidence=request.POST['ville'], m_email=request.POST['email'],
                                 m_telephone=request.POST['telephone'])
                 infoperso.save()
         return redirect('/create_cv/infoperso')
@@ -287,18 +293,18 @@ def save(request,page):
         test = Biographie.objects.get(m_user = request.user)
         if test :
             test.m_description = request.POST['biographie']
-            
+
             return redirect('/create_cv/biographie')
         else:
             biographie = Biographie(m_user= request.user, m_description=request.POST['biographie'])
             biographie.save()
             return redirect('/create_cv/biographie')
-    
+
     elif page == 'reference':
         #test = Reference.objects.get(m_user = request.user)
         #if test :
         #    test.m_description = request.POST['reference']
-            
+
         #    return redirect('/create_cv/reference')
         #else:
         reference = Reference(m_user= request.user, m_description=request.POST['reference'])
@@ -316,17 +322,17 @@ def save(request,page):
 
 def delete(request,page,id):
     if page == 'diplome':
-        
+
         print(id)
 
         diploma = Diploma.objects.get(id = id)
         diploma.delete()
-        
+
         print("Diplome supprimé avec succès")
 
         return redirect('/create_cv/diplome')
     elif page == 'competence':
-        
+
         competence = Competence.objects.get(id = id)
         competence.delete()
 
@@ -349,8 +355,8 @@ def delete(request,page,id):
 
         print("Biographie supprimé avec succès")
 
-        return redirect('/create_cv/biographie')	
-    elif page == 'loisir':	
+        return redirect('/create_cv/biographie')
+    elif page == 'loisir':
 
         loisir = Loisir.objects.get(id = id)
         loisir.delete()
@@ -583,11 +589,11 @@ def enregistrer(request,page):
             print(cv.m_diplomas.all())
             print("Diplome {} enregistré avec succès".format(infoperso))
         return redirect('/create_cv/diplome')
-    
+
     elif page == 'diplome':
         diplomes = Diploma.objects.filter(m_user = request.user)
         cv = CVFolder.objects.get(m_user = request.user)
-        for diplome in diplomes : 
+        for diplome in diplomes :
             cv.m_diplomas.add(diplome)
 
             print (cv.m_diplomas.all())
@@ -598,18 +604,18 @@ def enregistrer(request,page):
     elif page == 'competence':
         competences = Competence.objects.filter(m_user = request.user)
         cv = CVFolder.objects.get(m_user = request.user)
-        for competence in competences : 
+        for competence in competences :
             cv.m_competences.add(competence)
 
             print (cv.m_competences.all())
             print("Competence {} enregistré avec succès".format(competence))
         succes = 1
         return redirect('/create_cv/reference',{'succes': succes})
-    
+
     elif page == 'reference':
         references = Reference.objects.filter(m_user = request.user)
         cv = CVFolder.objects.get(m_user = request.user)
-        for reference in references : 
+        for reference in references :
             cv.m_references.add(reference)
 
             print (cv.m_references.all())
@@ -617,12 +623,12 @@ def enregistrer(request,page):
         succes = 1
         return redirect('/create_cv/loisir',{'succes': succes})
 
-    elif page == 'experience':	
+    elif page == 'experience':
 
         #experience = Experience.objects.get(id = id)
         experiences = Experience.objects.filter(m_user = request.user)
         cv = CVFolder.objects.get(m_user = request.user)
-        for experience in experiences : 
+        for experience in experiences :
             cv.m_experiences.add(experience)
 
             print (cv.m_experiences.all())
@@ -633,8 +639,8 @@ def enregistrer(request,page):
     elif page == 'biographie':
         biographies = Biographie.objects.filter(m_user = request.user)
         cv = CVFolder.objects.get(m_user = request.user)
-        for biographie in biographies : 
-            
+        for biographie in biographies :
+
             cv.m_biographies.add(biographie)
 
             print (cv.m_biographies.all())
@@ -646,7 +652,7 @@ def enregistrer(request,page):
         #loisir = Loisir.objects.get(id = id)
         loisirs = Loisir.objects.filter(m_user = request.user)
         cv = CVFolder.objects.get(m_user = request.user)
-        for loisir in loisirs : 
+        for loisir in loisirs :
             cv.m_loisirs.add(loisir)
 
             print (cv.m_loisirs.all())

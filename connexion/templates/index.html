@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<meta charset="utf-8">
+	<title>BeeFisrt</title>
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="{% static 'connexion/css/nunito-font.css' %}">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="{% static 'connexion/css/style.css' %}"/>
+	<link rel="stylesheet" href="{% static 'create_cv/css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'create_cv/css/bootstrap.min.css' %}">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="{% static 'create_cv/js/bootstrap.min.js' %}"></script>
+    <script defer src="{% static 'create_cv/js/jquery-3.2.1.min.js' %}"></script>
+    <!--    fontawesome 5-->
+    <link rel="stylesheet" href="{% static 'create_cv/css/all.css' %}">
+
+    <script defer src="{% static 'create_cv/js/all.js' %}"></script>
+
+	<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <style>
+        nav a {
+            color: #69ff00;
+        }
+    </style>
+
+</head>
+<body class="form-v6">
+	{% include 'create_cv/nav.html' %}
+	<div class="page-content">
+		<div class="form-v6-content">
+			<div class="form-left">
+				<img src="{% static 'connexion/images/registration.jpg' %}" style="max-width: 520px; min-height: 550px;" alt="form">
+			</div>
+			<form class="form-detail" action="/connexion/inscription/" method="post" style="margin:auto;">
+				{% csrf_token %}
+				<h2>Inscription</h2>
+				{% if err %}
+					<p class="alert-danger" style=" "> {{ err }}</p>
+				{% endif%}
+				<div class="form-row">
+					<input type="text" name="name" id="name" class="input-text" placeholder="Votre nom utilisateur" required>
+				</div>
+				<div class="form-row">
+					<input type="text" name="email" id="email" class="input-text" placeholder="votre adresse email" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}">
+				</div>
+				<div class="form-row">
+					<input type="password" name="password" id="password" class="input-text" placeholder="Entrez votre mot de passe" required>
+				</div>
+				<div class="form-row">
+					<input type="password" name="comfirmpassword" id="comfirmpassword" class="input-text" placeholder="Confirmez votre mot de passe" required>
+				</div>
+				{% if errpass %}
+					<p class="alert-danger" style=" "> {{ errpass }}</p>
+				{% endif%}
+
+				<div class="form-row-last">
+					<button type="submit" name="register" class="register" >
+						<i class="fa fa-user-plus"></i> M'inscrire </button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script !src="">
+		function  submit()
+		{
+			alert($("password").val);
+		}
+
+		/*$("form").submit(function(){
+		  alert("Submitted");
+		});*/
+	</script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

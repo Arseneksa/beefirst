@@ -27,32 +27,9 @@
 
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark  sticky-top" style="background: #719fff; margin-bottom:2% ">
-        <a class="navbar-brand" href="#">BeeFirst</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
-                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    {% include 'create_cv/nav.html' %}
 
-        <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'home' %}">Accueil <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'home' %}">Déposer votre CV</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{% url 'home' %}">Espace recruteur</a>
-                </li>
-
-            </ul>
-            <a href="#" class="a"><i class="fas fa-sign-in-alt"></i> Connexion / Inscription</a>
-
-        </div>
-    </nav>
-
-    <div class="container-fluid ">
+    <div class="container-fluid " style="margin-top:10px;">
         <h3 class="text-center">Générateur de <span class="t-green" style="color: #69ff00;">CV</span> </h3>
     </div>
 

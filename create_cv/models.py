@@ -1,20 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
-from phone_field import PhoneField
+#from phone_field import PhoneField
 
 
 class Infoperso(models.Model):
     m_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     m_nom = models.CharField(max_length=64, blank=True, null=True)
     m_prenom = models.CharField(max_length=64, blank=True, null=True)
-    # m_aide = models.CharField(max_length=5000, blank=True, null=True)
     m_villeresidence = models.CharField(max_length=64, blank=True, null=True)
-    # m_user_avatar = models.ImageField(upload_to="media/createcv", blank=True)
     m_email = models.EmailField(max_length=254, blank=True, null=True)
-    m_age = models.IntegerField(max_length=3, default=0)
+    m_age = models.IntegerField( default=0)
     m_profession = models.CharField(max_length=254, default=" ")
     # PhoneField est une application prise ici https://pypi.org/project/django-phone-field/
-    m_telephone = PhoneField(blank=True, help_text='Contact phone number', null=True)
+    m_telephone = models.IntegerField( default=0)
 
 
 class Photo(models.Model):
