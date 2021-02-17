@@ -16,6 +16,7 @@ def inscription(request):
     # if Photo.objects.filter(m_user=request.user):
     #     photos = Photo.objects.filter(m_user=request.user).first()
     err = ''
+    compte = 0
     errpass = ''
     if request.method == 'POST':
         if User.objects.filter(username=request.POST['email']):
@@ -31,30 +32,37 @@ def inscription(request):
             # Nous vérifions si les données sont correctes
 
             print(user1.email)
-            user = authenticate(username=user1.username, password=""+request.POST['password'])
+
+            user = authenticate(username=""+request.POST['email'], password=""+request.POST['password'])
             if user:  # Si l'objet renvoyé n'est pas None
                 request.session['user_id'] = request.user.id
                 login(request, user)  # nous connectons l'utilisateur
                 print(request.user.id)
+                compte = 1
+
             else:  # sinon une erreur sera affichée
                 error = True
-            return render(request, 'login.html', {'nbar': 'home'})
 
+            print(compte)
+            return render(request, 'create_cv/accueil.html', {'nbar': 'home','compte':compte})
         else:
             errpass = 'Veillez saisir des mots de passe identique'
 
-    return render(request, 'index.html', {'err': err, 'errpass': errpass})
+    return render(request, 'index.html', {'err': err, 'errpass': errpass,'compte':compte})
 
 
 def connexion(request):
     err = ''
+    connexion = '';
     if request.method == 'POST':
         user = authenticate(username=''+request.POST['email'], password=""+request.POST['password'])
         if user is not None:  # Si l'objet renvoyé n'est pas None
             request.session['user_id'] = request.user.id
             login(request, user)  # nous connectons l'utilisateur
             print(request.user.id)
-            return render(request, 'create_cv/accueil.html', {'nbar': 'home'})
+            connexion = 'Connexion réussi!!';
+            print(connexion);
+            return render(request, 'create_cv/accueil.html', {'nbar': 'home','connexion':connexion})
         else:  # sinon une erreur sera affichée
             error = True
             err = 'Adresse email ou mot de passe incorrect'

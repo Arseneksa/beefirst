@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,4 +95,102 @@
 		});*/
 	</script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+=======
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<meta charset="utf-8">
+	<title>BEEFIRST</title>
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="{% static 'connexion/css/nunito-font.css' %}">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="{% static 'connexion/css/style.css' %}"/>
+	<link rel="stylesheet" href="{% static 'create_cv/css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'create_cv/css/bootstrap.min.css' %}">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="{% static 'create_cv/js/bootstrap.min.js' %}"></script>
+    <script defer src="{% static 'create_cv/js/jquery-3.2.1.min.js' %}"></script>
+    <!--    fontawesome 5-->
+    <link rel="stylesheet" href="{% static 'create_cv/css/all.css' %}">
+
+    <script defer src="{% static 'create_cv/js/all.js' %}"></script>
+
+	<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <style>
+        nav a {
+            color: #69ff00;
+        }
+    </style>
+
+</head>
+<body class="form-v6">
+	<nav class="navbar navbar-expand-lg navbar-dark  sticky-top" style="background: #719fff; ">
+			<a class="navbar-brand" href="#">BeeFirst</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+				aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarToggler">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item ">
+						<a class="nav-link" href="{% url 'home' %}">Accueil <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="{% url 'home' %}">Déposer votre CV</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="{% url 'home' %}">Espace recruteur</a>
+					</li>
+
+				</ul>
+
+				<a href="#" class="a active"><i class="fas fa-sign-in-alt"></i> Connexion / Inscription</a>
+			</div>
+    </nav>
+	<div class="page-content" style="height: 100%;">
+        <div  class="row" style="background: white; height: 450px; margin: 40px;">
+            <div class="col-md-12 " style="background: white;">
+
+                <video id="preview" style=" width: 100%; height: auto; margin-top: 25px;"></video>
+            </div>
+
+        </div> 
+	</div>
+
+
+    <script type="text/javascript">
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      scanner.addListener('scan', function (content) {
+        alert(content);
+		  //if content = '/cr'
+		  //window.location = content
+      });
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          scanner.start(cameras[1]);
+        } else {
+          console.error('No cameras found.');
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    </script>
+
+	<script !src="">
+		function  submit()
+		{
+			alert($("password").val);
+		}
+
+		/*$("form").submit(function(){
+		  alert("Submitted");
+		});*/
+	</script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+>>>>>>> 14e679ed817075160ec5c6bfd74643b3aafc08d2
 </html>

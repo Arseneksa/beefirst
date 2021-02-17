@@ -44,6 +44,7 @@
 
 				<div class=" form-left"  ></div>
 
+
 			<form class="form-detail" action="/connexion/contact/" method="post">
 				{% csrf_token %}
 				<h2 style="text-align:center;">Nous contacter</h2>
@@ -101,6 +102,14 @@
                         alert(position.coords.latitude);
                         var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 16).addLayer(osm);
 
+<<<<<<< HEAD
+                        alert(position.coords.latitude);
+                        alert(position.coords.longitude);
+                        L.marker([position.coords.latitude, position.coords.longitude])
+                            .addTo(map)
+                            .bindPopup('Ma position.')
+                            .openPopup();
+=======
                         alert(position.coords.longitude);
 
                         var lat = document.getElementById('latitude');
@@ -112,6 +121,7 @@
                             .addTo(map)
                             .bindPopup('Ma position.')
                             .openPopup();*/
+>>>>>>> 14e679ed817075160ec5c6bfd74643b3aafc08d2
 
                     });
 
