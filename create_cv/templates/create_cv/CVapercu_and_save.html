@@ -1,18 +1,30 @@
 
     <div class="row">
+        {%  if menu != "choixcv" %}
         <div class="offset-sm-4 col-sm-2">
-            <span class="btn btn-around2 btn-block" data-toggle="modal" data-target="#apercu"> <i class="far fa-eye"></i> Aperçu CV </span><br>
+
+                <span class="btn btn-around2 btn-block" data-toggle="modal" data-target="#apercu"> <i class="far fa-eye"></i> Aperçu CV </span><br>
+
         </div>
+         {% endif %}
         {% if menu == "biographie" %}
             <div class="col-sm-2">
                 <a href="{% url 'voir_cv'  %}" target="_blank" class="btn  btn-around2 btn-block"><i class="far fa-save"></i> Imprimer le CV </a>
             </div>
         {% else %}
+            {%  if menu == "choixcv" %}
+                <div class="offset-sm-5 col-sm-2">
+                    <a href="{% url 'enregistrer' menu  %}" class="btn  btn-around2 btn-block"><i class="far fa-save"></i> Suivant
+                    </a>
+                </div>
+            {% else %}
             <div class="col-sm-2">
                 <a href="{% url 'enregistrer' menu  %}" class="btn  btn-around2 btn-block"><i class="far fa-save"></i> Suivant
                 </a>
             </div>
+            {% endif %}
         {% endif %}
+
     </div>
 
     <div class="modal fade" id="apercu">

@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -131,10 +131,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
 MEDIA_ROOT = '/home/beefirstcv/beefirst/media'
 MEDIA_URL = '/media/'
-STATIC_ROOT = '/home/beefirstcv/beefirst/static'
-STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ligne rajoutée par Fritz pour ne plus avoir cette remarque suivante
+# (mysql.W002) MySQL Strict Mode is not set for database connection 'default'
+SILENCED_SYSTEM_CHECKS = [
+    'django_mysql.W002',
+]
+

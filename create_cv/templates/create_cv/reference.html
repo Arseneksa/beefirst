@@ -9,12 +9,12 @@
     {%endif%}
     <span class="help"> <i class="fas fa-help icon"> </i> Aide </span>
     <h5><span style="color: #719fff;"> REFERENCE  </span></h5>
-    <form action="/create_cv/save/{{menu}}" method='POST'>
+    <form {% if reference %}action="/create_cv/save_edit/{{menu}}/{{reference.id}}"{% else %} action="/create_cv/save/{{menu}}" {% endif %} method='POST'>
         {% csrf_token %}
         <div class="form-group">
             <label for="reference">Donnez votre reference <span style="color: #719fff;"></span> :</label><br>
 
-            <textarea type="textarea" class="form-control" placeholde r=" " id="reference" name="reference"></textarea>
+            <textarea type="textarea" value="{{reference.m_description }}" class="form-control" placeholder="Liste des references" id="reference" name="reference"></textarea>
         </div>
 
         {% include 'create_cv/boutonajouter.html' %}
@@ -29,9 +29,14 @@
         <li>
             <h5 class="">
                 <span class="right "><a href="{% url 'delete' menu d.id %}" class="close"> <i class="fas fa-trash icon a-red"> </i> </a></span>
-                <span class="right edit"> <i class="fas fa-edit icon"> </i> </span>
+                <span class="right edit"> <a href="{% url 'modifier' menu d.id %}" > <i class="fas fa-edit icon edit"> </i> </a> </span>
             </h5>
-            <a href="#"> <span class="t-blue"> {{d.m_description}} </span> </a><br>
+            <!--<a href="#"> <span class="t-blue"> {{d.m_description}} </span> </a><br>-->
+            <ul>
+                {% for f in d.tasks_enumerate %}
+                <li>{{f}} </li>
+                {% endfor %}
+            </ul>
 
         </li>
         {% endfor %}

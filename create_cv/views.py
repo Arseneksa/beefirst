@@ -3,19 +3,77 @@ from django.shortcuts import render,redirect,HttpResponse
 from django.http import JsonResponse
 from .models import *
 from django.contrib.auth import authenticate, login, logout
+
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
+
+from django.http import HttpResponse
+from django.views.generic import View
+
+# importing get_template from loader
+from django.template.loader import get_template, render_to_string
+# import render_to_pdf from util.py
+#from .utils import render_to_pdf
+from django.views.generic import View
+from django.utils import timezone
+from .models import *
+#from .render import Render
+import weasyprint
+from weasyprint import default_url_fetcher
+
+from django.conf import settings
 #from sendsms import api
 
 #from smsgateway import SMSGateway, Message
 
 #client = SMSGateway('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTU5NjcyOTc3NSwiZXhwIjo0MTAyNDQ0ODAwLCJ1aWQiOjgyNzc5LCJyb2xlcyI6WyJST0xFX1VTRVIiXX0.N0nv6Ej2yOuP3jpXL_8XZcquYgzRSlwR_Gf5LPAAlo0')
-
-
 #Création utilisateur temporaire
+
 #user = User.objects.create_user('john@gmail.com', 'john@gmail.com', 'password')
 #user.save()
+
+def my_fetcher(url):
+        if url.startswith('graph:'):
+            graph_data = map(float, url[6:].split(','))
+            return dict(string=generate_graph(graph_data),
+                        mime_type='image/png')
+        return default_url_fetcher(url)
+
+class GeneratePDF(View):
+
+
+    def get(self, request, *args, **kwargs):
+        template = get_template('pdf.html')
+        if request.user.is_authenticated:
+            infoperso = Infoperso.objects.filter(m_user=request.user).first();
+
+            #print(request.user)
+            #return HttpResponse(request.user);
+            context = {
+                'infoperso': infoperso,
+                'photo': Photo.objects.filter(m_user=request.user).first().m_user_avatar,
+                'diplomas': Diploma.objects.filter(m_user=request.user),
+                'competence': Competence.objects.filter(m_user=request.user),
+                'experiences': Experience.objects.filter(m_user=request.user),
+                'references': Reference.objects.filter(m_user=request.user),
+                'langues': Langue.objects.filter(m_user=request.user),
+                'biographie': Biographie.objects.filter(m_user=request.user).last(),
+                'loisirs': Loisir.objects.filter(m_user=request.user),
+
+
+            }
+            html = render_to_string('pdf.html',context, request=request)
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'filename=monCV.pdf'
+            weasyprint.HTML(string=html, url_fetcher=my_fetcher).write_pdf(response,
+                                                   stylesheets=[weasyprint.CSS(
+                                                       settings.STATIC_ROOT + 'apercu_cv/assets/css/pillar-4.css')])
+            return response
+
+        else:
+            return HttpResponse("Veuillez vous connecter merci!!")
+        return HttpResponse("Not found")
 
 def home(request):
 
@@ -23,6 +81,7 @@ def home(request):
     #api.send_sms(body='test sms', from_phone='699626455', to=['655174582'])
     #authentification de l'utilisateur
     # Nous vérifions si les données sont correctes
+
     """user = authenticate(username='john@gmail.com', password='password')
     if user:  # Si l'objet renvoyé n'est pas None
         request.session['user_id'] = request.user.id
@@ -30,7 +89,12 @@ def home(request):
         print(request.user.id)
     else:  # sinon une erreur sera affichée
         error = True"""
-    return render(request, 'create_cv/accueil.html', {'nbar': 'home'})
+    if request.user.is_authenticated:
+
+        cv = CVFolder.objects.filter(m_user=request.user)
+    else :
+        cv = ""
+    return render(request, 'create_cv/accueil.html', {'nbar': 'home','cv':cv})
 
 
 @login_required(login_url='create_cv/')
@@ -59,16 +123,53 @@ def infoperso(request):
         'photos': Photo.objects.filter(m_user=request.user).first(),
         'text': text,
         'mesinfos': mesinfos,
-        'infoperso': Infoperso.objects.filter().first(),
-        'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.all(),
-        'experiences': Experience.objects.filter(),
-        'biographie': Biographie.objects.last(),
-        'loisirs': Loisir.objects.filter(),
-        'langues': Langue.objects.filter(),
+        'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
+        'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+        'loisirs': Loisir.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
         'nbar': 'infoperso'
     }
     return render(request, 'create_cv/infoperso.html', context)
+@login_required(login_url='create_cv/')
+def choixcv(request):
+
+    mesinfos = {}
+    cv = CVFolder.objects.filter(m_user=request.user)
+    modelscv = Cvmodel.objects.all()
+    if cv:
+        print(cv)
+
+    else:
+        cv = CVFolder(m_user=request.user)
+        cv.save()
+        print(cv)
+
+    if Infoperso.objects.filter(m_user=request.user):
+        infos = Infoperso.objects.filter(m_user=request.user)
+        mesinfos = infos.first()
+        text = "Modifier"
+    else :
+        text = "Ajouter"
+
+    context = {
+        'menu': 'choixcv',
+        'photos': Photo.objects.filter(m_user=request.user).first(),
+        'text': text,
+        'modelscv': modelscv,
+        'mesinfos': mesinfos,
+        'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
+        'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+        'loisirs': Loisir.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
+        'nbar': 'choixcv'
+    }
+    return render(request, 'create_cv/choixcv.html', context)
 
 
 
@@ -79,15 +180,15 @@ def diplome(request):
 
     context = {
         'menu': 'diplome',
-     	'infoperso': Infoperso.objects.filter().first(),
+     	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.all(),
-        'reference': Reference.objects.filter(),
-        'experiences': Experience.objects.filter(),
-        'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
-        'langues': Langue.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'reference': Reference.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+      	'loisirs': Loisir.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
         'nbar': 'diplome',
         'text': 'ajouter'
     }
@@ -98,15 +199,15 @@ def diplome(request):
 def competence(request):
     context = {
         'menu': 'competence',
-     	'infoperso': Infoperso.objects.filter().first(),
+     	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.all(),
-        'experiences': Experience.objects.filter(),
-        'reference': Reference.objects.filter(),
-        'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
-        'langues': Langue.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'reference': Reference.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+      	'loisirs': Loisir.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
         'nbar': 'competence'
     }
     return render(request, 'create_cv/competence.html', context)
@@ -116,15 +217,15 @@ def competence(request):
 def experience(request):
     context = {
         'menu': 'experience',
-     	'infoperso': Infoperso.objects.filter().first(),
+     	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.filter(),
-        'experiences': Experience.objects.filter(),
-        'reference': Reference.objects.filter(),
-        'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
-        'langues': Langue.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'reference': Reference.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+      	'loisirs': Loisir.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
         'nbar': 'experience'
     }
     return render(request, 'create_cv/experience.html', context)
@@ -134,15 +235,15 @@ def experience(request):
 def biographie(request):
     context = {
         'menu': 'biographie',
-        'infoperso': Infoperso.objects.filter().first(),
+        'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.filter(),
-        'experiences': Experience.objects.filter(),
-        'reference': Reference.objects.filter(),
-        'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
-        'langues': Langue.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'reference': Reference.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+      	'loisirs': Loisir.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
         'nbar': 'biographie'
     }
     return render(request, 'create_cv/biographie.html', context)
@@ -151,15 +252,15 @@ def biographie(request):
 def reference(request):
     context = {
         'menu': 'reference',
-        'infoperso': Infoperso.objects.filter().first(),
+        'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.filter(),
-        'reference': Reference.objects.filter(),
-        'experiences': Experience.objects.filter(),
-        'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
-        'langues': Langue.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'references': Reference.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+      	'loisirs': Loisir.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
         'nbar': 'reference'
     }
     return render(request, 'create_cv/reference.html', context)
@@ -169,15 +270,15 @@ def reference(request):
 def loisir(request):
     context = {
         'menu': 'loisir',
-     	'infoperso': Infoperso.objects.filter().first(),
+     	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.all(),
-        'experiences': Experience.objects.filter(),
-        'reference': Reference.objects.filter(),
-        'biographie': Biographie.objects.last(),
-        'langues': Langue.objects.filter(),
-        'loisirs': Loisir.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'reference': Reference.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+        'langues': Langue.objects.filter(m_user=request.user),
+        'loisirs': Loisir.objects.filter(m_user=request.user),
         'nbar': 'loisir'
     }
     return render(request, 'create_cv/loisir.html', context)\
@@ -186,15 +287,15 @@ def loisir(request):
 def langue(request):
     context = {
         'menu': 'langue',
-     	'infoperso': Infoperso.objects.filter().first(),
+     	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.all(),
-        'experiences': Experience.objects.filter(),
-        'reference': Reference.objects.filter(),
-        'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
-      	'langues': Langue.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'reference': Reference.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+      	'loisirs': Loisir.objects.filter(m_user=request.user),
+      	'langues': Langue.objects.filter(m_user=request.user),
         'nbar': 'langue'
     }
     return render(request, 'create_cv/langue.html', context)
@@ -203,18 +304,18 @@ def langue(request):
 @login_required(login_url='create_cv/')
 def voir_cv(request):
     context = {
-        'infoperso': Infoperso.objects.filter().first(),
+        'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(),
-        'competence': Competence.objects.all(),
-        'experiences': Experience.objects.filter(),
-        'references': Reference.objects.filter(),
-        'langues': Langue.objects.filter(),
-        'biographie': Biographie.objects.last(),
-      	'loisirs': Loisir.objects.filter(),
+     	'diplomas': Diploma.objects.filter(m_user=request.user),
+        'competence': Competence.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user),
+        'references': Reference.objects.filter(m_user=request.user),
+        'langues': Langue.objects.filter(m_user=request.user),
+        'biographie': Biographie.objects.filter(m_user=request.user).last(),
+      	'loisirs': Loisir.objects.filter(m_user=request.user),
 
     }
-    return render(request, 'apercu_cv/modele1/base2.html', context)
+    return render(request, 'base2.html', context)
 
 @login_required(login_url='create_cv/')
 def photo(request):
@@ -348,6 +449,14 @@ def delete(request,page,id):
         print("Expérience supprimée avec succès")
         return redirect('/create_cv/experience')
 
+    elif page == 'reference':
+
+        reference = Reference.objects.get(id = id)
+        reference.delete()
+
+        print("Reference supprimée avec succès")
+        return redirect('/create_cv/reference')
+
     elif page == 'biographie':
 
         biographie = Biographie.objects.get(id = id)
@@ -384,16 +493,16 @@ def modifier(request,page,id):
             # return HttpResponse(request.POST['text'])
         context = {
             'menu': 'diplome',
-            'infoperso': Infoperso.objects.filter().first(),
+            'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(),
+            'diplomas': Diploma.objects.filter(m_user=request.user),
             'diplome': diplome,
-            'competence': Competence.objects.all(),
-            'reference': Reference.objects.filter(),
-            'experiences': Experience.objects.filter(),
-            'biographie': Biographie.objects.last(),
-            'langues': Langue.objects.filter(),
-            'loisirs': Loisir.objects.filter(),
+            'competence': Competence.objects.filter(m_user=request.user),
+            'reference': Reference.objects.filter(m_user=request.user),
+            'experiences': Experience.objects.filter(m_user=request.user),
+            'biographie': Biographie.objects.filter(m_user=request.user).last(),
+            'langues': Langue.objects.filter(m_user=request.user),
+            'loisirs': Loisir.objects.filter(m_user=request.user),
             'nbar': 'diplome',
             'text': 'Modifier'
         }
@@ -436,21 +545,47 @@ def modifier(request,page,id):
             # return HttpResponse(request.POST['text'])
         context = {
             'menu': 'experience',
-            'infoperso': Infoperso.objects.filter().first(),
+            'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(),
+            'diplomas': Diploma.objects.filter(m_user=request.user),
             'experience': experience,
-            'competence': Competence.objects.all(),
-            'reference': Reference.objects.filter(),
-            'experiences': Experience.objects.filter(),
-            'biographie': Biographie.objects.last(),
-            'loisirs': Loisir.objects.filter(),
-            'langues': Langue.objects.filter(),
+            'competence': Competence.objects.filter(m_user=request.user),
+            'reference': Reference.objects.filter(m_user=request.user),
+            'experiences': Experience.objects.filter(m_user=request.user),
+            'biographie': Biographie.objects.filter(m_user=request.user).last(),
+            'loisirs': Loisir.objects.filter(m_user=request.user),
+            'langues': Langue.objects.filter(m_user=request.user),
             'nbar': 'experience',
             'text': 'Modifier'
         }
         return render(request, 'create_cv/experience.html', context)
         print("experience Modifier avec succès")
+
+    elif page == 'reference':
+
+        if Reference.objects.filter(id=id):
+            reference = Reference.objects.filter(id=id)
+            reference = reference.first()
+            # text = "modifier";
+
+            # return HttpResponse(request.POST['text'])
+        context = {
+            'menu': 'reference',
+            'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
+            'photos': Photo.objects.filter(m_user=request.user).first(),
+            'diplomas': Diploma.objects.filter(m_user=request.user),
+            'competence': Competence.objects.filter(m_user=request.user),
+            'reference': reference,
+            'experiences': Experience.objects.filter(m_user=request.user),
+            'references': Reference.objects.filter(m_user=request.user),
+            'biographie': Biographie.objects.filter(m_user=request.user).last(),
+            'loisirs': Loisir.objects.filter(m_user=request.user),
+            'langues': Langue.objects.filter(m_user=request.user),
+            'nbar': 'reference',
+            'text': 'Modifier'
+        }
+        return render(request, 'create_cv/reference.html', context)
+        print("Reference Modifier avec succès")
 
     elif page == 'biographie':
 
@@ -479,16 +614,16 @@ def modifier(request,page,id):
             # return HttpResponse(request.POST['text'])
         context = {
             'menu': 'langue',
-            'infoperso': Infoperso.objects.filter().first(),
+            'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(),
+            'diplomas': Diploma.objects.filter(m_user=request.user),
             'langue': langue,
-            'competence': Competence.objects.all(),
-            'reference': Reference.objects.filter(),
-            'experiences': Experience.objects.filter(),
-            'biographie': Biographie.objects.last(),
-            'loisirs': Loisir.objects.filter(),
-            'langues': Langue.objects.filter(),
+            'competence': Competence.objects.filter(m_user=request.user),
+            'reference': Reference.objects.filter(m_user=request.user),
+            'experiences': Experience.objects.filter(m_user=request.user),
+            'biographie': Biographie.objects.filter(m_user=request.user).last(),
+            'loisirs': Loisir.objects.filter(m_user=request.user),
+            'langues': Langue.objects.filter(m_user=request.user),
             'nbar': 'langue',
             'text': 'Modifier'
         }
@@ -619,7 +754,7 @@ def enregistrer(request,page):
             cv.m_references.add(reference)
 
             print (cv.m_references.all())
-            print("Competence {} enregistré avec succès".format(reference))
+            print("Reference {} enregistré avec succès".format(reference))
         succes = 1
         return redirect('/create_cv/loisir',{'succes': succes})
 

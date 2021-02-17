@@ -1,3 +1,4 @@
+
 body {
     height: 100%;
 }
@@ -37,7 +38,6 @@ body {
     height: 60px;
     background: #719fff;
     color: white;
-    min-width:100%;
     padding-top: 15px;
     text-align: center;
     min-width:180px;
@@ -52,8 +52,8 @@ body {
         height: 60px;
         color: #719fff;
         background: white;
-        min-width: 100%;
         padding-top: 15px;
+
         /*box-shadow: 0px 0px 1px 1px #69ff00;*/
         text-align: center;
     }
@@ -241,4 +241,15 @@ footer {
 .help:hover {text-decoration: underline;
     color: #69ff00; 
     float: right;
+}
+.pillactive{
+    min-width: 180px;
+    border-radius: 0px;
+    text-align: center;
+    background: #719fff;
+    color:white;
+
+}
+.radius0{
+    border-radius:0px;
 }

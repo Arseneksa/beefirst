@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 #from phone_field import PhoneField
+#from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Infoperso(models.Model):
@@ -9,10 +10,11 @@ class Infoperso(models.Model):
     m_prenom = models.CharField(max_length=64, blank=True, null=True)
     m_villeresidence = models.CharField(max_length=64, blank=True, null=True)
     m_email = models.EmailField(max_length=254, blank=True, null=True)
-    m_age = models.IntegerField( default=0)
-    m_profession = models.CharField(max_length=254, default=" ")
-    # PhoneField est une application prise ici https://pypi.org/project/django-phone-field/
-    m_telephone = models.IntegerField( default=0)
+
+    m_age = models.IntegerField(null=True)
+    m_profession = models.CharField(max_length=254, null=True)
+
+    m_telephone = models.IntegerField(blank=True, help_text='Numero de telephone', null=True)
 
 
 class Photo(models.Model):
@@ -20,13 +22,32 @@ class Photo(models.Model):
     m_user_avatar = models.ImageField(upload_to="media/createcv/", blank=True)
 
 
+
+#Concerne le type de diposition que aura le contenu du cv
+"""class DispositionCv(models.Model):
+    # cv_numero = models.IntegerField(blank=True)
+    #couleur du cv
+    nom = models.CharField(blank=True,max_length=256)
+    #Le type de cv (professionnel, simple, Experimenté)
+    cv_type = models.CharField(blank=True,max_length=256)
+    #Le modèle correspond au type
+    cv_img = models.ImageField(upload_to="media/modelecv/", blank=True)"""
+# Table permettant de créer des modèle de cv
 class Cvmodel(models.Model):
     # cv_numero = models.IntegerField(blank=True)
-    cv_color = models.IntegerField(blank=True)
-    cv_type = models.IntegerField(blank=True)
-    cv_img = models.ImageField(upload_to="media/modelecv/", blank=True)
+    nom = models.CharField(blank=True,max_length=256)
+    #couleur du cv
+    cv_color = models.CharField(blank=True,max_length=256)
+    #Le type de cv (professionnel, simple, Experimenté)
+    cv_type = models.CharField(blank=True,max_length=256)
 
 
+#Image correspondant au modèle de cv
+class CvImg(models.Model):
+    m_model = models.ForeignKey(Cvmodel, on_delete=models.CASCADE, blank=True, null=True)
+    nom = models.ImageField(upload_to="media/modelecv/", blank=True)
+
+#Table permettant de lier le modèle  de cv choisi à l'utilisateur
 class Cvsetting(models.Model):
     m_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     cv_model = models.ForeignKey(Cvmodel, on_delete=models.CASCADE, blank=True, null=True)
@@ -84,6 +105,8 @@ class Reference(models.Model):
     # m_aide = models.CharField(max_length=5000, blank=True, null=True)
     m_date = models.DateTimeField(auto_now=True, blank=True, null=True)
 
+    def tasks_enumerate(self):
+        return self.m_description.split('\n')
 
 class Loisir(models.Model):
     m_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)

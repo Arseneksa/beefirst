@@ -1,0 +1,21 @@
+<section class="resume-section interests-section mb-2">
+    <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3"> References</h2>
+    <div class="resume-section-content">
+        <ul class="list-unstyled">
+
+            {% for d in references %}
+
+            <li style="font-weight: bolder;">
+
+                <!--<a href="#"> <span class="t-blue"> {{d.m_description}} </span> </a><br>-->
+                <ul>
+                    {% for f in d.tasks_enumerate %}
+                    <li>{{f}} </li>
+                    {% endfor %}
+                </ul>
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section><!--//interests-section-->

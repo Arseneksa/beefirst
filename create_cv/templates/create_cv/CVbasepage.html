@@ -1,14 +1,19 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="fr">
 
 <head>
     <title>BeeFirst</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     {% load static %}
     {% include 'apercu_cv/modele1/head.html' %}
     <link rel="stylesheet" href="{% static 'create_cv/css/bootstrap.min.css'%}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="{% static 'create_cv/js/bootstrap.min.js' %}"></script>
     <!--    fontawesome 5-->
@@ -17,6 +22,15 @@
 
     <script defer src="{% static 'create_cv/js/all.js' %}"></script>
     <script defer src="{% static 'create_cv/js/jquery-3.2.1.min.js' %}"></script>
+    <style>
+        .radius0{
+                border-radius:0px;
+            }
+        .cvimage{
+
+            height:180px;
+        }
+    </style>
 </head>
 
 <body>
@@ -72,8 +86,11 @@
         </div>
     </div>
     <footer>
-        Copyright @ 2020 design by YOZATI
+        Copyright @ 2020 design by YOZATI (KSA)
     </footer>
 </body>
-
+<script !src="">$('#pills-tab a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})</script>
 </html>

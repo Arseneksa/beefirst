@@ -1,3 +1,4 @@
+
 {% extends 'create_cv/CVbasepage.html' %}
 
 {% block content %}
@@ -8,7 +9,7 @@
         <span class="help"> <a href="#aide" class="t-green" data-toggle="modal" data-target="#aide" > <i class="fas fa-info-circle icon"> </i> Aide </a></span>
         <div class="form-group">
             {% if diplome %}
-            <label for="diplome1">Nom du diplôme <span style="color: #719fff;">*</span>: </label>
+            <label for="diplome1">Nom du diplôme <span style="color: #719fff;"></span>: </label>
             <select class="form-control" id="diplome1" name="diplome">
 
                 <option value="{{diplome.m_diploma}}">
@@ -26,17 +27,18 @@
                 <option value="Baccalaureat">
                     Baccalaureat
                 </option>
-                <option value="Licence 1">
-                    Licence 1
+                <option value="Licence académique">
+                    Licence académique
                 </option>
-                <option value="Licence 2">
-                    Licence 2
+
+                <option value="Licence professionnelle">
+                    Licence professionnelle
                 </option>
-                <option value="Licence 3">
-                    Licence 3
+                <option value="BTS ">
+                    BTS
                 </option>
-                <option value="BTS 1 ">
-                    BTS 1
+                <option value="DUT ">
+                    DUT
                 </option>
                 <option value="Master 1">
                     Master 1
@@ -52,21 +54,21 @@
         </div>
 
         <div class="form-group">
-            <label for="intitule1">Intitulé <span style="color: #719fff;">*</span> :</label><br>
+            <label for="intitule1">Intitulé <span style="color: #719fff;"></span> :</label><br>
 
             <input type="text" value="{{diplome.m_intitule}}" class="form-control" placeholder="L'intitulé de votre diplôme " id="intitule1" name="intitule">
         </div>
         <div class="form-group">
-            <label for="ecole1">Etablissement <span style="color: #719fff;">*</span> :</label><br>
+            <label for="ecole1">Etablissement <span style="color: #719fff;"></span> :</label><br>
 
             <input type="text" value="{{diplome.m_school}}"  class="form-control" placeholder="L'établissement dans lequel vous avez eu votre diplôme" id="ecole1" name="ecole">
         </div>
         <div class="form-group">
-            <label for="annee1">Année d'obtention <span style="color: #719fff;">*</span> :</label>
-            <input value="{{diplome.m_year}}"  class="form-control" type="number" min=1970 name="annee" required value="2020" id="annee1">
+            <label for="annee1">Année d'obtention <span style="color: #719fff;"></span> :</label>
+            <input value="{{diplome.m_year}}"  class="form-control" type="number" min=1970 name="annee" value="2019" id="annee1">
         </div>
         <div class="form-group">
-            <label for="mention1">Mention <span style="color: #719fff;">*</span> :</label>
+            <label for="mention1">Mention <span style="color: #719fff;"></span> :</label>
             <select class="form-control" id="mention1" name="mention">
 
                 <option value="{{diplome.m_mention}}">
@@ -91,7 +93,7 @@
         </div>
         {% include 'create_cv/boutonmodifier.html' %}
         {%else%}
-            <label for="diplome">Nom du diplôme <span style="color: #719fff;">*</span>: </label>
+            <label for="diplome">Nom du diplôme <span style="color: #719fff;"></span>: </label>
             <select class="form-control" id="diplome" name="diplome">
 
                 <option value="default">
@@ -132,21 +134,21 @@
         </div>
 
         <div class="form-group">
-            <label for="ecole">Intitulé <span style="color: #719fff;">*</span> :</label><br>
+            <label for="ecole">Intitulé <span style="color: #719fff;"></span> :</label><br>
 
             <input type="text" class="form-control" placeholder="L'intitulé de votre diplôme " id="intitule" name="intitule">
         </div>
         <div class="form-group">
-            <label for="ecole">Etablissement <span style="color: #719fff;">*</span> :</label><br>
+            <label for="ecole">Etablissement <span style="color: #719fff;"></span> :</label><br>
 
             <input type="text" class="form-control" placeholder="L'établissement dans lequel vous avez eu votre diplôme" id="ecole" name="ecole">
         </div>
         <div class="form-group">
-            <label for="annee">Année d'obtention <span style="color: #719fff;">*</span> :</label>
-            <input class="form-control" type="number" min=1970 name="annee" required value="2020" id="annee">
+            <label for="annee">Année d'obtention <span style="color: #719fff;"></span> :</label>
+            <input class="form-control" type="number" min=1970 name="annee" value="2019" id="annee">
         </div>
         <div class="form-group">
-            <label for="mention">Mention <span style="color: #719fff;">*</span> :</label>
+            <label for="mention">Mention <span style="color: #719fff;"></span> :</label>
             <select class="form-control" id="mention" name="mention">
 
                 <option value="default">
@@ -203,7 +205,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title"><b class="t-green ">Conseils :</b>
 
-Listez vos études et formations et montrez à vos futurs employeurs en quoi vous êtes qualifié pour le poste.</h4>
+Listez vos études et formations pour montrer à vos futurs employeurs en quoi vous êtes qualifié pour le poste.</h4>
                     <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
                 </div>
                 <!-- Modal body -->
@@ -213,13 +215,13 @@ Listez vos études et formations et montrez à vos futurs employeurs en quoi vou
                             <div class="col-md-1 col-lg-1 ">
                             </div>
                             <div class="col-md-10 col-lg-10 ">
-                                <p>Conseils</p>
+                                <!-- <p>Conseils</p> -->
                                 <ul>
                                     <li>
-                                        N'oubliez pas de mettre en avant les études qui sont les plus pertinentes pour le poste auquel vous postulez.                                    </li>
+                                        N'oubliez pas de mettre en avant les études qui sont les plus pertinentes pour le poste auquel vous postulez.
                                     </li>
                                     <li>
-                                        La section éducation peut également inclure des cours supplémentaires ou formations professionnelles s'ils sont plus pertinents pour votre expérience.                                    </li>
+                                        La section éducation peut également inclure des cours supplémentaires ou formations professionnelles, s'ils sont plus pertinents, pour votre expérience.                                    </li>
                                     </li>
 
                                 </ul>
@@ -253,11 +255,6 @@ Listez vos études et formations et montrez à vos futurs employeurs en quoi vou
 
                         </div>
                 </div>
-
-                <!-- Modal footer
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>-->
 
             </div>
         </div>

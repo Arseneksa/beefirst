@@ -31,14 +31,14 @@ def inscription(request):
             # Nous vérifions si les données sont correctes
 
             print(user1.email)
-            user = authenticate(username=user1.email, password=user1.password)
+            user = authenticate(username=user1.username, password=""+request.POST['password'])
             if user:  # Si l'objet renvoyé n'est pas None
                 request.session['user_id'] = request.user.id
                 login(request, user)  # nous connectons l'utilisateur
                 print(request.user.id)
             else:  # sinon une erreur sera affichée
                 error = True
-            return render(request, 'create_cv/accueil.html', {'nbar': 'home'})
+            return render(request, 'login.html', {'nbar': 'home'})
 
         else:
             errpass = 'Veillez saisir des mots de passe identique'

@@ -1,0 +1,11 @@
+beefirst/settings.py
+connexion/__pycache__/
+connexion/migrations/__pycache__/
+connexion/migrations/
+create_cv/migrations/
+create_cv/migrations/__pycache__/
+create_cv/_pycache_/
+recruteur/__pycache__/
+recruteur/migrations/__pycache__/
+env
+media/

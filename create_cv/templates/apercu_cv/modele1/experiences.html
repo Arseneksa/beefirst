@@ -4,12 +4,12 @@
         <div class="resume-timeline position-relative">
 
             {% for e in experiences %}
-            <article class="resume-timeline-item position-relative pb-5">
+            <article class="resume-timeline-item position-relative pb-1">
 
-                <div class="resume-timeline-item-header mb-2">
+                <div class="resume-timeline-item-header mb-1">
                     <div class="d-flex flex-column flex-md-row">
-                        <h3 class="resume-position-title font-weight-bold mb-1">{{ e.m_poste }}</h3>
-                        <div class="resume-company-name ml-auto">{{ e.m_etablissement }}</div>
+                        <h3 class="resume-position-title font-weight-bold mb-1">{{ e.m_poste }}({{ e.m_etablissement }})</h3>
+                        <div class="resume-company-name ml-auto"></div>
                     </div><!--//row-->
                     <div class="resume-position-time">{{ e.m_start }}  -  {{ e.m_end }}</div>
                 </div><!--//resume-timeline-item-header-->
@@ -33,7 +33,7 @@
                 </div><!--//resume-timeline-item-desc-->
 
             </article><!--//resume-timeline-item-->
-            
+
             {% endfor %}
 
 
