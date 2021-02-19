@@ -32,7 +32,7 @@ body {
 }
 
 .list-btn li a {
-    /*margin: auto;
+    margin: auto;
     border-radius: 0px;
     border: 0px;
     height: 60px;
@@ -40,8 +40,8 @@ body {
     color: white;
     padding-top: 15px;
     text-align: center;
-    min-width:180px;*/
-    margin-top:20px;
+    min-width:180px;
+    /*margin-top:20px;
   padding: 20px 40px;
   background-color: #4E4DED;
   border: 0;
@@ -51,7 +51,7 @@ body {
   font-weight: 500;
   box-shadow: 0 10px 20px rgba(0,0,0,0.10), 0 6px 6px rgba(0,0,0,0.05);
   animation: shadow-pulse 1s infinite;
-  cursor:pointer;
+  cursor:pointer;*/
 
 
 }
