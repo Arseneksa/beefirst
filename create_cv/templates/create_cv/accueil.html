@@ -4,9 +4,9 @@
 
 
 
-<div class="container-fluid row" style="width: 100%; margin:auto; max-height: 100% ;">
+<div class="container-fluid row "  id ="body" style="width: 100%; margin:auto; max-height: 100% ;">
 
-    <div class="col-lg-6 col-md-6 hidden-sm">
+    <div class="col-lg-6 col-md-6 hidde-sm">
         {% load static %}
         <img class="ml-lg-5" src="{% static 'create_cv/img/recruter-agent-analysant-candidats.jpg' %}" width="100%" >
     </div>
@@ -58,7 +58,7 @@
                     <li class=" " >
 
 
-                            <a href="{% url 'infoperso' %}"  class="btn cta-button"><i class="fa fa-edit"> </i> Modifier mon CV</a>
+                            <a href="{% url 'infoperso' %}"  class="btn"><i class="fa fa-edit"> </i> Modifier mon CV</a>
 
 
 
@@ -140,23 +140,64 @@
     </div>
 </div>
 <script>
-var msg = new SpeechSynthesisUtterance('Bienvenue sur notre plateforme de CV');
-window.speechSynthesis.speak(msg);
-    $('.toast').toast(data-animation="true");
+    var msg = new SpeechSynthesisUtterance('Bienvenue sur notre plateforme !');
+    window.speechSynthesis.speak(msg);
+    var body;
     // Afficher le nom du fichier selectionné
     $(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
+
     //afficher formulaire d'importation
-
     $(document).ready(function(){
-        $('.toast').toast('show');
-
         $("#formshow").click(function () {
             $("#fileform").show(1800);
         });
     });
+
+    // Wrap everything in an IIFE
+    (function($, viewport){
+
+        // Executes only in XS breakpoint
+        if( viewport.is('xs') ) {
+            // ...
+            //alert("xs encour");
+        }
+
+        // Executes in SM, MD and LG breakpoints
+        if( viewport.is('>=sm') ) {
+            // ...
+            //alert("sm");
+        }
+
+        // Executes in XS and SM breakpoints
+        if( viewport.is('<md') ) {
+            // ...
+            //alert("md");
+        }
+
+        // Execute only after document has fully loaded
+        $(document).ready(function() {
+            if( viewport.is('xs') ) {
+                // ...
+                //alert("xs 3");
+                body  = document.getElementById("body");
+                body.style.height = "70%";
+            }
+        });
+
+        // Execute code each time window size changes
+        $(window).resize(
+            viewport.changed(function() {
+                if( viewport.is('xs') ) {
+                    body  = document.getElementById("body");
+                    body.style.height = "70%";
+                }
+            })
+        );
+
+    })(jQuery, ResponsiveBootstrapToolkit);
 
 </script>
 {% endblock %}

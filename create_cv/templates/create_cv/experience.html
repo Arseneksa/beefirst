@@ -31,10 +31,10 @@
                :
             </label><br>
 
-     
+
             <input type="text" class="form-control" value="{{experience.m_poste}}" placeholder="Nom du poste occupé " id="poste" name="poste">
         </div>
-        
+
         <div class="form-group">
             <label for="tache">Tâches effectuées <span style="color: #719fff;"></span> :</label>
             <textarea type="textarea" value="{{experience.m_tasks }}" class="form-control" placeholder=" exemple de tâche" id="tasks" name="tasks"></textarea>
@@ -156,11 +156,11 @@
                 <span class="right edit"> <a href="{% url 'modifier' menu e.id %}" > <i class="fas fa-edit icon edit"> </i> </a> </span>
             </h5>
             <a href="#"> <span class="t-blue"> {{ e.m_etablissement }} </span><span class="t-black"> {{ e.m_poste }} </span> </a><br>
-            <ul>
+            <!--<ul>
                 {% for f in e.tasks_enumerate %}
                 <li>{{f}} </li>
                 {% endfor %}
-            </ul>
+            </ul> -->
         </li>
         {% endfor %}
 

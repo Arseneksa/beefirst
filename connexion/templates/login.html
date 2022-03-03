@@ -34,9 +34,7 @@
 	 {% include 'create_cv/nav.html' %}
 	<div class="page-content">
 		<div class="form-v6-content">
-			<div class="form-left">
-				<img src="{% static 'connexion/images/loginpick.jpg' %}" style="max-width: 520px; min-height: 550px;" alt="form">
-			</div>
+
 			<form class="form-detail" action="/connexion/" method="post" style="margin:auto;">
 				{% csrf_token %}
 				<h2 style="text-align:center;">Connexion</h2>

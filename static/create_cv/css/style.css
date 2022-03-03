@@ -58,7 +58,7 @@ body {
     .list-btn li a:hover {
         border-radius: 0px;
         margin: auto;
-        min-width: 180px;
+        width: 189px;
         border: 0.9px solid #719fff;
         height: 60px;
         color: #719fff;

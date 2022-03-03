@@ -53,9 +53,9 @@ class GeneratePDF(View):
             context = {
                 'infoperso': infoperso,
                 'photo': Photo.objects.filter(m_user=request.user).first().m_user_avatar,
-                'diplomas': Diploma.objects.filter(m_user=request.user),
+                'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
                 'competence': Competence.objects.filter(m_user=request.user),
-                'experiences': Experience.objects.filter(m_user=request.user),
+                'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
                 'references': Reference.objects.filter(m_user=request.user),
                 'langues': Langue.objects.filter(m_user=request.user),
                 'biographie': Biographie.objects.filter(m_user=request.user).last(),
@@ -63,12 +63,30 @@ class GeneratePDF(View):
 
 
             }
+            # Rendered
+            html_string = render_to_string('pdf.html', context, request=request)
+            html = weasyprint.HTML(string=html_string, base_url=request.build_absolute_uri())
+            # Creating http response
+            response = HttpResponse(content_type='application/pdf;')
+            response['Content-Disposition'] = 'inline; filename=monCV.pdf'
+            response['Content-Transfer-Encoding'] = 'binary'
+            """with tempfile.NamedTemporaryFile(delete=True) as output:
+                output.write(result)
+                output.flush()
+                output.seek(0)
+                response.write(output.read())"""
+            result = html.write_pdf(response,
+                                                   stylesheets=[weasyprint.CSS(
+                                                       settings.STATIC_ROOT + 'apercu_cv/assets/css/pillar-4.css')])
+
+
+            """return response
             html = render_to_string('pdf.html',context, request=request)
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = 'filename=monCV.pdf'
             weasyprint.HTML(string=html, url_fetcher=my_fetcher).write_pdf(response,
                                                    stylesheets=[weasyprint.CSS(
-                                                       settings.STATIC_ROOT + 'apercu_cv/assets/css/pillar-4.css')])
+                                                       settings.STATIC_ROOT + 'apercu_cv/assets/css/pillar-4.css')])"""
             return response
 
         else:
@@ -124,9 +142,9 @@ def infoperso(request):
         'text': text,
         'mesinfos': mesinfos,
         'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
-        'diplomas': Diploma.objects.filter(m_user=request.user),
+        'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
         'loisirs': Loisir.objects.filter(m_user=request.user),
         'langues': Langue.objects.filter(m_user=request.user),
@@ -161,9 +179,9 @@ def choixcv(request):
         'modelscv': modelscv,
         'mesinfos': mesinfos,
         'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
-        'diplomas': Diploma.objects.filter(m_user=request.user),
+        'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
         'loisirs': Loisir.objects.filter(m_user=request.user),
         'langues': Langue.objects.filter(m_user=request.user),
@@ -182,10 +200,10 @@ def diplome(request):
         'menu': 'diplome',
      	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
         'reference': Reference.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
       	'loisirs': Loisir.objects.filter(m_user=request.user),
         'langues': Langue.objects.filter(m_user=request.user),
@@ -201,7 +219,7 @@ def competence(request):
         'menu': 'competence',
      	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
         'experiences': Experience.objects.filter(m_user=request.user),
         'reference': Reference.objects.filter(m_user=request.user),
@@ -219,9 +237,9 @@ def experience(request):
         'menu': 'experience',
      	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'reference': Reference.objects.filter(m_user=request.user),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
       	'loisirs': Loisir.objects.filter(m_user=request.user),
@@ -237,9 +255,9 @@ def biographie(request):
         'menu': 'biographie',
         'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'reference': Reference.objects.filter(m_user=request.user),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
       	'loisirs': Loisir.objects.filter(m_user=request.user),
@@ -254,10 +272,10 @@ def reference(request):
         'menu': 'reference',
         'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
         'references': Reference.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
       	'loisirs': Loisir.objects.filter(m_user=request.user),
         'langues': Langue.objects.filter(m_user=request.user),
@@ -272,9 +290,9 @@ def loisir(request):
         'menu': 'loisir',
      	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'reference': Reference.objects.filter(m_user=request.user),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
         'langues': Langue.objects.filter(m_user=request.user),
@@ -289,9 +307,9 @@ def langue(request):
         'menu': 'langue',
      	'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'reference': Reference.objects.filter(m_user=request.user),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
       	'loisirs': Loisir.objects.filter(m_user=request.user),
@@ -306,16 +324,16 @@ def voir_cv(request):
     context = {
         'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
         'photos': Photo.objects.filter(m_user=request.user).first(),
-     	'diplomas': Diploma.objects.filter(m_user=request.user),
+     	'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
         'competence': Competence.objects.filter(m_user=request.user),
-        'experiences': Experience.objects.filter(m_user=request.user),
+        'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
         'references': Reference.objects.filter(m_user=request.user),
         'langues': Langue.objects.filter(m_user=request.user),
         'biographie': Biographie.objects.filter(m_user=request.user).last(),
       	'loisirs': Loisir.objects.filter(m_user=request.user),
 
     }
-    return render(request, 'base2.html', context)
+    return render(request, 'apercu_cv/modele1/base1.html', context)
 
 @login_required(login_url='create_cv/')
 def photo(request):
@@ -495,11 +513,11 @@ def modifier(request,page,id):
             'menu': 'diplome',
             'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(m_user=request.user),
+            'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
             'diplome': diplome,
             'competence': Competence.objects.filter(m_user=request.user),
             'reference': Reference.objects.filter(m_user=request.user),
-            'experiences': Experience.objects.filter(m_user=request.user),
+            'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
             'biographie': Biographie.objects.filter(m_user=request.user).last(),
             'langues': Langue.objects.filter(m_user=request.user),
             'loisirs': Loisir.objects.filter(m_user=request.user),
@@ -521,11 +539,11 @@ def modifier(request,page,id):
             'menu': 'competence',
             'infoperso': Infoperso.objects.filter().first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(),
+            'diplomas': Diploma.objects.filter().order_by('-m_year'),
             'competence1': competence,
             'competence': Competence.objects.all(),
             'reference': Reference.objects.filter(),
-            'experiences': Experience.objects.filter(),
+            'experiences': Experience.objects.filter().order_by('-m_end'),
             'biographie': Biographie.objects.last(),
             'loisirs': Loisir.objects.filter(),
             'langues': Langue.objects.filter(),
@@ -547,7 +565,7 @@ def modifier(request,page,id):
             'menu': 'experience',
             'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(m_user=request.user),
+            'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
             'experience': experience,
             'competence': Competence.objects.filter(m_user=request.user),
             'reference': Reference.objects.filter(m_user=request.user),
@@ -573,10 +591,10 @@ def modifier(request,page,id):
             'menu': 'reference',
             'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(m_user=request.user),
+            'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
             'competence': Competence.objects.filter(m_user=request.user),
             'reference': reference,
-            'experiences': Experience.objects.filter(m_user=request.user),
+            'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
             'references': Reference.objects.filter(m_user=request.user),
             'biographie': Biographie.objects.filter(m_user=request.user).last(),
             'loisirs': Loisir.objects.filter(m_user=request.user),
@@ -616,11 +634,11 @@ def modifier(request,page,id):
             'menu': 'langue',
             'infoperso': Infoperso.objects.filter(m_user=request.user).first(),
             'photos': Photo.objects.filter(m_user=request.user).first(),
-            'diplomas': Diploma.objects.filter(m_user=request.user),
+            'diplomas': Diploma.objects.filter(m_user=request.user).order_by('-m_year'),
             'langue': langue,
             'competence': Competence.objects.filter(m_user=request.user),
             'reference': Reference.objects.filter(m_user=request.user),
-            'experiences': Experience.objects.filter(m_user=request.user),
+            'experiences': Experience.objects.filter(m_user=request.user).order_by('-m_end'),
             'biographie': Biographie.objects.filter(m_user=request.user).last(),
             'loisirs': Loisir.objects.filter(m_user=request.user),
             'langues': Langue.objects.filter(m_user=request.user),

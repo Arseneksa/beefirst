@@ -15,8 +15,17 @@
                 <option value="{{diplome.m_diploma}}">
                     {{diplome.m_diploma}}
                 </option>
+                <option value="CEP">
+                    CEP
+                </option>
+                <option value="FSL Certificate">
+                    FSL Certificate
+                </option>
                 <option value="BEPC">
                     BEPC
+                </option>
+                <option value="GCE O Level">
+                    GCE O LEVEL
                 </option>
                 <option value="CAP">
                     CAP
@@ -26,6 +35,9 @@
                 </option>
                 <option value="Baccalaureat">
                     Baccalaureat
+                </option>
+                <option value="GCE A Level">
+                    GCE A LEVEL
                 </option>
                 <option value="Licence académique">
                     Licence académique
@@ -40,6 +52,17 @@
                 <option value="DUT ">
                     DUT
                 </option>
+                <option value="HND ">
+                    HND
+                </option>
+
+                <option value="Certification Cisco">
+                    Certification Cisco
+                </option>
+                <option value="Certification">
+                    Certification
+                </option>
+
                 <option value="Master 1">
                     Master 1
                 </option>
@@ -49,6 +72,10 @@
                 <option value="Doctorat">
                     Doctorat
                 </option>
+                <option value="autres">
+                    Autres
+                </option>
+
             </select>
 
         </div>
@@ -96,11 +123,23 @@
             <label for="diplome">Nom du diplôme <span style="color: #719fff;"></span>: </label>
             <select class="form-control" id="diplome" name="diplome">
 
-                <option value="default">
-                    Brevet
+                <option value="{{diplome.m_diploma}}">
+                    {{diplome.m_diploma}}
+                </option>
+                <option value="CEP">
+                    CEP
+                </option>
+                <option value="FSL Certificate">
+                    FSL Certificate
                 </option>
                 <option value="BEPC">
                     BEPC
+                </option>
+                <option value="GCE O Level">
+                    GCE O LEVEL
+                </option>
+                <option value="CAP">
+                    CAP
                 </option>
                 <option value="Probatoire">
                     Probatoire
@@ -108,18 +147,34 @@
                 <option value="Baccalaureat">
                     Baccalaureat
                 </option>
-                <option value="Licence 1">
-                    Licence 1
+                <option value="GCE A Level">
+                    GCE A LEVEL
                 </option>
-                <option value="Licence 2">
-                    Licence 2
+                <option value="Licence académique">
+                    Licence académique
                 </option>
-                <option value="Licence 3">
-                    Licence 3
+
+                <option value="Licence professionnelle">
+                    Licence professionnelle
                 </option>
-                <option value="BTS 1 ">
-                    BTS 1
+                <option value="BTS ">
+                    BTS
                 </option>
+                <option value="DUT ">
+                    DUT
+                </option>
+                <option value="HND ">
+                    HND
+                </option>
+
+                <option value="Certification Cisco">
+                    Certification Cisco
+                </option>
+
+                <option value="Certification ">
+                    Certification
+                </option>
+
                 <option value="Master 1">
                     Master 1
                 </option>
@@ -129,6 +184,12 @@
                 <option value="Doctorat">
                     Doctorat
                 </option>
+                <option value="autres">
+                    Autres
+                </option>
+                <!-- <option value="autres">
+                    Autres
+                </option> -->
             </select>
 
         </div>

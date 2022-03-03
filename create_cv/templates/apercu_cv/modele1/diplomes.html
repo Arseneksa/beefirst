@@ -9,8 +9,8 @@
             {% for d in diplomas %}
             <li>
                 <div class="resume-degree font-weight-bold">{{d.m_diploma}} {{d.m_intitule}}</div>
-                <div class="resume-degree-org">{{d.m_school}}</div>
-                <div class="resume-degree-time">{{d.m_year}}</div>
+                <div class="resume-degree-org">{{d.m_school}} (<span class="resume-degree-time">{{d.m_year}}</span>)</div>
+
 
             </li>
             {% endfor %}
